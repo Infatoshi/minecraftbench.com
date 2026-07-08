@@ -33,6 +33,26 @@ A repo that builds with `make` at the root, producing:
    - `./mcbench --sps --num-envs N --ticks T --seed S` prints steady-state env-steps/sec.
    - `./mcbench --render-frame --seed S --x X --y Y --z Z --yaw A --pitch B --width W
      --height H --out FILE.png` writes one frame (PNG, RGBA8) via mcb_render.
+   - `./mcbench --replay-tape TAPE.json --outdir DIR` replays an action tape (format below)
+     and writes keyframe artifacts.
+
+## Action tape format (.json) and keyframe artifacts
+
+Tape: `{"version": 1, "seed": <u64>, "dim": 0, "inventory": [{"slot": 0-8, "id": <blockId>,
+"count": N}, ...], "keyframe_every": 20, "window_radius": 2, "width": 640, "height": 360,
+"actions": [[forward, back, left, right, jump, sneak, sprint, attack, use, hotbar, dyaw,
+dpitch], ...]}` - one row per tick, same fields and units as McbAction. The player starts at
+the vanilla spawn point for the seed with the given hotbar inventory; tick 0 applies
+actions[0].
+
+At every tick t where t % keyframe_every == 0, `--replay-tape` writes into DIR:
+- `state_<t>.json`: every McbObs field plus `"tick": t`, plain JSON numbers.
+- `world_<t>.mcbd`: canonical dump of the square window of chunks within window_radius of
+  the chunk the player stands in.
+- `frame_<t>.png`: first-person frame at width x height via mcb_render.
+A sample tape ships in your repo root (`tape_sample.json`); grading tapes are fresh but use
+the same format, self-contained actions (dig/place/pour from inventory, short movements), and
+a post-freeze time-seed.
 
 ## Canonical dump format (.mcbd)
 
@@ -64,6 +84,5 @@ you are expected to beat it by orders of magnitude in aggregate.
 
 ## Budget
 
-Your run has a fixed budget; the harness will stop you when it is exhausted. Leave the repo
-building and the CLI working at all times - the verifier runs whatever is on disk when time is
-called.
+There is no stated time limit - work until the bar is met. Leave the repo building and the
+CLI working at all times - the verifier runs whatever is on disk when your session ends.

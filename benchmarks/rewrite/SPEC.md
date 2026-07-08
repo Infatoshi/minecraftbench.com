@@ -142,12 +142,33 @@ biomes -> terrain shape -> surface blocks -> caves/carving -> decoration.
 Trivial baselines published with the bench: all-stone, superflat, biomes-only reference candidates.
 Leaderboard shows skill above baseline, and the baselines' scores are printed on the site.
 
-### 6.2 Sim fidelity (tick-trace)
-Fixed action tapes replayed through the real game (qrl bridge, uncapped) and the candidate at the
-same time-seed. Per-tick state diff (pose, vitals, block edits); metrics: first-divergence-tick +
-per-field match rates. Tapes have checksummed consequences (dig, fluid flow, fall damage) so a
-no-op sim visibly diverges. `null` = UNSIMULATED sentinel per field: unimplemented features are
-reported as UNSIMULATED, never "matches zero" (false-pass guard).
+### 6.2 Trajectory fidelity (sim + render from one recording; designed 2026-07-08)
+One oracle setup retires every bespoke "how do we test fluids/mobs/time" question. A scripted
+action tape is replayed through the real game (qrl bridge, uncapped ~881 TPS - a 10-minute
+tape records in <1 min) and through the candidate at the same post-freeze time-seed; at every
+keyframe (every 20 ticks) both sides emit state json + local .mcbd window + frame PNG.
+
+Tape design principles:
+- SELF-CONTAINED ARENA: no long-range navigation. The player carries the test in its hotbar -
+  dig your own pit, pour your own water, pillar up 15 and step off, sand over a hole, torch,
+  let the day tick. Near-zero horizontal travel makes tapes seed-robust, which is what lets
+  the leg keep time-seed integrity (a seed whose spawn is unplayable, e.g. ocean, is redrawn
+  by published mechanical rule). Terrain coupling is tested by the keyframe world dumps, not
+  by scripted sightseeing.
+- SHARP SIGNATURES: each segment probes one mechanic with an exact consequence (fall damage
+  starts at 4 blocks, flat water spreads 7, dig timing per tool) so per-segment scores name
+  the broken system without reading code. Signatures verified against the oracle at tape-
+  authoring time, behavior-level only.
+- v1 tape is overworld-only. Nether/end is tape two: it needs structures ON (stronghold/
+  portal), a separate oracle profile from the structures-OFF worldgen protocol.
+
+Metrics per tape: first-divergence tick (last keyframe where state+blocks still match);
+per-field and per-segment state match rates (partial credit by design); pixel diff at three
+tiers - strict (native-determinism calibrated ~0.3/channel; sabotage ~69/channel = 240x
+window), loose, structural - so renderers climb a ladder instead of sitting at zero. `null` =
+UNSIMULATED sentinel per field: unimplemented features report UNSIMULATED, never "matches
+zero" (false-pass guard). Every graded run renders a side-by-side mp4 (oracle | candidate,
+divergence marked) from the raw frames; video is a viewing artifact, never scored.
 
 ### 6.3 Throughput (fidelity-gated, same-instance)
 Batched SPS on the 3090 with N envs stepping real tapes. CRITICAL: mid-run, the harness freezes a
@@ -248,11 +269,10 @@ This public repo ships only: harness client code, canonical dump format spec, de
 
 ## 10. Later tiers (explicitly out of v0)
 
-- Pixel-diff render leg: tick-locked frame capture vs the pinned deterministic client, sabotage-
-  calibrated tolerances (native 0.289/ch vs sabotage 69.4/ch gives a ~240x separation window),
-  fill-rule noise floor ~0.02% of pixels. v0 judges blocks and state only; render is where the
-  private repo's craster/render-opt experience returns.
-- Nether/end dims, mobs/AI depth, redstone: layer scoring extends naturally.
+- Render scoring is folded into the trajectory leg (6.2) as the pixel-tier ladder; the
+  fill-rule noise floor ~0.02% of pixels informs the strict tier.
+- Nether/end trajectory tape (structures-ON oracle profile), mobs/AI depth, redstone: tape
+  segments extend naturally.
 
 ## 11. Open decisions
 

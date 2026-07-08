@@ -252,3 +252,21 @@ Standing lesson for the writeup: the interesting integrity line is not "did it u
 internet" but "did it ship the banned thing," and the only banned thing here is Mojang's
 own code. Measured bonus finding stands either way: even verbatim cubiomes leaves
 leaves/wood <50% - the decoration wall is about draw-order integration, not knowledge.
+
+## 2026-07-08: trajectory leg designed - one recording, two readouts, mp4 artifact
+Decided with the user: the bench's scored legs collapse to worldgen + trajectory. The
+trajectory leg replaces the enumerated sim categories AND the future render leg with one
+oracle setup: a scripted action tape through the real game, keyframes every 20 ticks (state
++ local dump + frame), candidate replays the same tape. Readouts: first-divergence tick
+(the postable number: "stayed in sync with reality for N seconds"), per-segment state match
+(where fluids/gravity/timing actually get graded, with partial credit), pixel tiers
+(strict/loose/structural - the summit, never a gate on state scores). Key design move:
+SELF-CONTAINED tapes (carry the test in the hotbar, build the arena where you stand) which
+makes tapes seed-robust and preserves time-seed integrity for the sim leg too. MineRL was
+considered and rejected: the private repo's pinned client + qrl bridge is already
+pixel-deterministic (0/921600 px across launches) and replays uncapped at ~881 TPS. Every
+graded run ships a side-by-side mp4 with the divergence moment marked - the benchmark's
+most shareable artifact. Agent contract (tape json format, --replay-tape CLI, keyframe
+artifacts) is in agent/SPEC.md; VERIFIER.md rewritten; also fixed a stale "fixed budget"
+line in the agent pack left over from v1. Next: build the tape recorder in the private
+oracle repo (oracle side only; nothing from that repo crosses here but derived artifacts).

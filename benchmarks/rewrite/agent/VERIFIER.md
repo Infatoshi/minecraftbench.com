@@ -25,12 +25,29 @@ oracle dump. Trivial fills score near zero: published baselines (all-stone, supe
 alongside every sweep and the leaderboard shows skill above them. Reported per layer: biome
 layout, terrain shape, surface, carving, decoration.
 
-## Sim metric
+## Trajectory metric (sim + render, one recording)
 
-Fixed action tapes (movement, digging, water, falls) replayed through the real game and your
-env at the same seed. Per-tick state comparison (pose, vitals, block edits); metrics are
-first-divergence tick and per-field match rates. Fields you do not simulate must be reported
-honestly (your obs struct is the claim); a stub that never moves diverges at tick 1.
+An action tape (see SPEC: tape format) is replayed through the real game and through your env
+at the same post-freeze time-seed. Tapes are self-contained system tours - dig a pit, pour
+water into it, pillar up and step off, place sand over a hole, let time pass - so every
+segment probes a specific mechanic with a sharp consequence (fall damage starts at exactly 4
+blocks; flat-ground water spreads exactly 7; a dug block drops on a specific tick). At every
+keyframe (every 20 ticks) both sides emit state + local world dump + frame.
+
+Scores, per tape:
+- FIRST-DIVERGENCE TICK: the last keyframe at which your state and blocks still match
+  reality. A stub that never moves diverges at the first keyframe.
+- STATE MATCH: per-field and per-segment match rates across the whole tape (pose, vitals,
+  block edits, fluid cells). Partial credit is real: correct movement scores the movement
+  segments even if water is wrong. Fields you do not simulate must be reported honestly
+  (your obs struct is the claim).
+- PIXEL TIERS: per-channel frame diff at three published tolerances - strict (calibrated so
+  the real client re-run against itself passes, ~0.3/channel), loose, structural. Sabotage
+  measures ~69/channel, so the strict window is ~240x. Renderer quality climbs the tiers;
+  it never gates the state scores.
+
+Each graded run also produces a side-by-side video (oracle vs your env, divergence marked);
+videos are derived from the raw keyframe frames and never scored themselves.
 
 ## Throughput metric (fidelity-gated, same-instance)
 
@@ -39,14 +56,6 @@ honestly (your obs struct is the claim); a stub that never moves diverges at tic
 mcb_dump_world / mcb_obs on those same instances; the dumps are diffed against the oracle.
 Throughput counts ONLY if the mid-run dumps pass. A fast path that fakes stepping and a slow
 path that renders dumps honestly will be caught by construction.
-
-## Render metric
-
-Tick-locked frame capture from your renderer vs the pinned deterministic 1.11.2 client at the
-same seed, pose, and tick. Per-channel pixel diff with published tolerances calibrated so that
-the real client re-run against itself passes (~0.3/channel) and any visible divergence fails
-(sabotage measures ~69/channel). Scored when the leg lands; until then rendering is unscored
-but the task includes it.
 
 ## Integrity verification (all mechanical, run on every submission)
 
@@ -66,5 +75,6 @@ but the task includes it.
 
 ## Composite
 
-Leaderboard reports the per-layer worldgen grid, sim divergence, render diff, and gated SPS.
+Leaderboard reports the per-layer worldgen grid, the trajectory scores (first-divergence,
+state match, pixel tiers), and gated SPS.
 Weighting is published with the sweep; fidelity gates throughput, never the reverse.
