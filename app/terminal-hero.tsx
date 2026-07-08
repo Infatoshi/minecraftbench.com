@@ -11,7 +11,7 @@ const PROMPT =
 const COMMANDS = [
   `claude -p --model claude-fable-5 --effort max --dangerously-skip-permissions "${PROMPT}"`,
   `codex exec -m gpt-5.5 -c model_reasoning_effort=xhigh --dangerously-bypass-approvals-and-sandbox "${PROMPT}"`,
-  `grok -p --yolo -m grok-4.3 --effort max "${PROMPT}"`,
+  `grok -m grok-4.5 --effort high --permission-mode bypassPermissions --output-format streaming-json -p "${PROMPT}"`,
   `cursor agent --print --yolo --model "composer-2.5[fast=true]" "${PROMPT}"`,
 ]
 

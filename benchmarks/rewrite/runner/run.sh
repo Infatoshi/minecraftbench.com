@@ -27,7 +27,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 [[ -n "$HARNESS" ]] || {
-  echo "--harness required: codex | claude | kimi-claude | zai-claude | deepseek-claude | minimax-claude" >&2
+  echo "--harness required: codex | claude | grok | kimi-claude | zai-claude | deepseek-claude | minimax-claude" >&2
   exit 2
 }
 # vendor keys for the rebadged-claude harnesses
@@ -104,6 +104,16 @@ case "$HARNESS" in
     sudo chmod 600 /home/mcbench/.claude/.credentials.json
     # shellcheck disable=SC2016
     CMD="claude -p --verbose --output-format stream-json --model $MODEL --effort max --dangerously-skip-permissions \"\$(cat prompt.txt)\""
+    ;;
+  grok)  # xAI models via the grok CLI (session auth from ~/.grok/auth.json)
+    sudo cp /home/infatoshi/.local/bin/grok /home/mcbench/.local/bin/grok
+    sudo chown mcbench:mcbench /home/mcbench/.local/bin/grok
+    sudo -u mcbench mkdir -p /home/mcbench/.grok
+    sudo cp /home/infatoshi/.grok/auth.json /home/mcbench/.grok/auth.json
+    sudo chown mcbench:mcbench /home/mcbench/.grok/auth.json
+    sudo chmod 600 /home/mcbench/.grok/auth.json
+    # shellcheck disable=SC2016
+    CMD="grok -p \"\$(cat prompt.txt)\" -m ${MODEL:-grok-4.5} --effort high --output-format streaming-json --permission-mode bypassPermissions"
     ;;
   kimi-claude)
     [[ -n "$MODEL" && -n "${KIMI_API_KEY:-}" ]] || { echo "--model + KIMI_API_KEY required" >&2; exit 2; }
