@@ -382,3 +382,18 @@ pre,
   margin-bottom: 0.65rem;
   white-space: pre-wrap;
 }
+
+.terminal-cmdline {
+  cursor: pointer;
+}
+
+.terminal-cmdline:hover .terminal-cmd {
+  color: var(--color-fg-bright);
+}
+
+.terminal-copied {
+  margin-left: 0.6rem;
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  color: var(--color-accent);
+}

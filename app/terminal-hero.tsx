@@ -21,6 +21,14 @@ export function TerminalHero() {
   const [text, setText] = useState("")
   const [cmdIdx, setCmdIdx] = useState(0)
   const [phase, setPhase] = useState<"typing" | "deleting">("typing")
+  const [copied, setCopied] = useState(false)
+
+  const copy = () => {
+    navigator.clipboard.writeText(COMMANDS[cmdIdx]).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1200)
+    })
+  }
 
   useEffect(() => {
     const target = COMMANDS[cmdIdx]
@@ -58,10 +66,15 @@ export function TerminalHero() {
           <span className="terminal-cmd">cat GOAL.md</span>
         </div>
         <div className="terminal-goal">{GOAL}</div>
-        <div>
+        <div
+          className="terminal-cmdline"
+          onClick={copy}
+          title="click to copy"
+        >
           <span className="terminal-ps1">$ </span>
           <span className="terminal-cmd">{text}</span>
           <span className="terminal-cursor" />
+          {copied && <span className="terminal-copied">copied</span>}
         </div>
       </div>
     </div>
