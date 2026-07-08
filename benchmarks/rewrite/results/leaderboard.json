@@ -5,6 +5,38 @@
   "note": "Per-run records. worldgen = macro-averaged per-block-class accuracy vs the real Java game over time-seeds drawn after the run froze (v0 scores the worldgen leg; sim tick-trace and fidelity-gated SPS land next). Raw artifacts: benchmarks/rewrite/results/runs/. Prompt is versioned (SPEC section 3); scores compare within a prompt version only. All v1 runs used a fixed 8h budget with no stated bar; v2 states the bit-exact bar with no stated time limit.",
   "runs": [
     {
+      "run_id": "20260708_152310_grok_grok-4.5",
+      "model": "grok-4.5 (high effort)",
+      "harness": "grok",
+      "date": "2026-07-08",
+      "built": true,
+      "worldgen_macro_pct": 30.78,
+      "worldgen_raw_pct": 91.81,
+      "hours_used": 0.35,
+      "hours_granted": 24,
+      "cost_usd": null,
+      "audit": "clean",
+      "note": "told 'do not stop until bit-for-bit' with no time limit: ran 21 min (vs 9 under v1), best water (91%) and lava (58%) of any run, but lost its v1 dirt/grass gains; ended with a clean EndTurn whose final message is a TODO list of its own remaining bugs",
+      "trace_url": null,
+      "prompt_version": 2
+    },
+    {
+      "run_id": "20260708_152317_codex",
+      "model": "gpt-5.5 (xhigh)",
+      "harness": "codex",
+      "date": "2026-07-08",
+      "built": true,
+      "worldgen_macro_pct": 18.57,
+      "worldgen_raw_pct": 86.11,
+      "hours_used": 0.32,
+      "hours_granted": 24,
+      "cost_usd": null,
+      "audit": "clean",
+      "note": "told 'do not stop until bit-for-bit' with no time limit: ran 19 min (vs 15 under v1), score unchanged from v1 (18.3 to 18.57), and its sign-off explicitly concedes 'this is not bit-for-bit Minecraft 1.11.2'",
+      "trace_url": null,
+      "prompt_version": 2
+    },
+    {
       "run_id": "20260708_143923_grok_grok-4.5",
       "model": "grok-4.5 (high effort)",
       "harness": "grok",

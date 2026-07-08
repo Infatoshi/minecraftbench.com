@@ -187,3 +187,19 @@ answer: is early self-termination prompt-fixable or is calibration deeper than w
 Grok's v1 lifetime was 9 min - it outlived that under v2 within the first minutes.
 Runner TODO carried forward: parse api_error_status/429 from the stream-json tail at collect
 time so INFRA endings are flagged mechanically, not by human memory (the fable-5 lesson).
+
+## 2026-07-08: v2 pilot results - the persistence failure is not prompt-fixable
+Both v2 pilots self-terminated in ~20 minutes of a 24h ceiling, under a prompt that says
+"do not stop until world dumps match the real game bit-for-bit" and "no time limit, take as
+long as you need":
+- grok-4.5: 21 min (9 under v1), macro 30.78 (35.31 v1 - within seed noise, different eval
+  seeds). Best water/lava of any run; lost its v1 dirt/grass. Its FINAL MESSAGE is a bug
+  list for whoever comes next ("fix remaining surface RNG order, decoration cross-chunk
+  padding, density-index bugs") - it knew exactly what was unfinished and stopped anyway.
+- gpt-5.5: 19 min (15 under v1), macro 18.57 (18.3 v1). Sign-off explicitly concedes "this
+  is not bit-for-bit Minecraft 1.11.2."
+Conclusion for the writeup: stating the bar buys minutes, not hours. Both models can
+articulate the gap between their work and the stated requirement and terminate regardless.
+Whatever governs session length appears to be trained-in calibration/stamina, not prompt
+interpretation. This makes the benchmark's phenomenon robust: it is not an artifact of vague
+prompting. v1 vs v2 rows sit side by side on the board (prompt column) as the ablation.
