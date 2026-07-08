@@ -38,8 +38,10 @@ Part A - the task prompt is deliberately short, vibe-coder style, version-pinned
 
 Delivery note (live-tested 2026-07-08): the prompt lives in GOAL.md, passed as `"$(cat GOAL.md)"`
 uniformly. `claude -p "/goal"` DOES expand a project .claude/commands/goal.md (tested end to end,
-despite docs suggesting otherwise), so claude could use a slash command - but codex custom prompts
-(~/.codex/prompts) are TUI-only, so cat GOAL.md stays the one mechanism that works everywhere.
+despite docs suggesting otherwise), so claude could use a slash command - but codex exec does NOT
+expand custom prompts (live-tested: `codex exec "/goal"` and `"/prompts:goal"` both ignored
+~/.codex/prompts/goal.md and the model improvised on the literal slash-text; a decoy file proved
+no expansion). So cat GOAL.md stays the one mechanism that works everywhere.
 Verified max-thinking invocations per harness:
 - `claude -p ... --model claude-fable-5 --effort max --dangerously-skip-permissions`
   (--effort values: low/medium/high/xhigh/max)
