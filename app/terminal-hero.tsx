@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 // Real flags, verified against each CLI's current docs/help (2026-07-08).
 // Keep in sync with benchmarks/rewrite/agent/prompt.txt - this is the real prompt, verbatim.
 const PROMPT =
-  "rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env. SPEC.md and VERIFIER.md have the details, figure the rest out yourself. use subagents, commit as you go, dont leave the build broken. go."
+  "rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env. SPEC.md and VERIFIER.md have the details, figure the rest out yourself. use subagents. go."
 
 const COMMANDS = [
   `claude -p "${PROMPT}" --model claude-fable-5 --effort max --dangerously-skip-permissions`,
