@@ -43,3 +43,6 @@
 - Codex delegate for the diff toolchain stalled 28 min with zero files written; killed and
   hand-wrote (~250 lines). Lesson: delegate scope was fine but always inspect output dir
   early, not just process liveness.
+- End-to-end oracle cycle verified on fresh seed 20260708: launch -> qrl reset -> save flush ->
+  .mca -> .mcbd in 34s total (pregen 6s once the JVM is warm-booted). A 20-seed eval suite is
+  ~15 min of oracle time. Floor is seed-stable: all-stone macro 15.20% (vs 15.34% on 489).

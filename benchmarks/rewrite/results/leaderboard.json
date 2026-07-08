@@ -13,9 +13,9 @@
     { "id": "sps", "title": "Batched throughput", "metric": "fidelity-gated SPS" }
   ],
   "baselines": [
-    { "name": "all-stone", "note": "trivial baseline, not yet measured" },
-    { "name": "superflat", "note": "trivial baseline, not yet measured" },
-    { "name": "biomes-only", "note": "trivial baseline, not yet measured" }
+    { "name": "all-stone", "raw_match_pct": 89.0, "macro_acc_pct": 15.34, "note": "measured vs vanilla seed 489, 441-chunk decorated core" },
+    { "name": "superflat", "raw_match_pct": 74.99, "macro_acc_pct": 9.55, "note": "measured vs vanilla seed 489, 441-chunk decorated core" },
+    { "name": "biomes-only", "note": "not yet implemented" }
   ],
   "models": [
     { "name": "example-model-a", "score": 41.2, "solved": 4, "notes": "placeholder" },

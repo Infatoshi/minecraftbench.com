@@ -20,7 +20,12 @@ export type Leaderboard = {
   date: string
   note: string
   layers: Layer[]
-  baselines: { name: string; note: string }[]
+  baselines: {
+    name: string
+    note: string
+    raw_match_pct?: number
+    macro_acc_pct?: number
+  }[]
   models: ModelRow[]
 }
 
