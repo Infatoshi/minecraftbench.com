@@ -1,42 +1,36 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "bench": "rewrite",
   "date": "2026-07-08",
-  "note": "First real run scored (worldgen leg only; sim + gated SPS legs land next). Score = macro-averaged per-block-class accuracy, mean over 2 time-seeds drawn after the run froze. Runs: benchmarks/rewrite/results/runs/.",
-  "layers": [
-    { "id": "biomes", "title": "Biome map", "metric": "per-class macro acc %" },
-    { "id": "terrain", "title": "Terrain shape", "metric": "per-class macro acc %" },
-    { "id": "surface", "title": "Surface blocks", "metric": "per-class macro acc %" },
-    { "id": "caves", "title": "Caves / carving", "metric": "per-class macro acc %" },
-    { "id": "decoration", "title": "Decoration (ores/trees/features)", "metric": "per-class macro acc %" },
-    { "id": "sim", "title": "Sim tick-trace", "metric": "first-divergence tick" },
-    { "id": "sps", "title": "Batched throughput", "metric": "fidelity-gated SPS" }
-  ],
-  "baselines": [
-    { "name": "all-stone", "raw_match_pct": 90.51, "macro_acc_pct": 14.69, "note": "mean over the 2 eval seeds" },
-    { "name": "superflat", "raw_match_pct": 73.94, "macro_acc_pct": 9.22, "note": "mean over the 2 eval seeds" },
-    { "name": "biomes-only", "note": "not yet implemented" }
-  ],
-  "models": [
+  "note": "Per-run records. worldgen = macro-averaged per-block-class accuracy vs the real Java game over time-seeds drawn after the run froze (v0 scores the worldgen leg; sim tick-trace and fidelity-gated SPS land next). Raw artifacts: benchmarks/rewrite/results/runs/.",
+  "runs": [
     {
-      "name": "gpt-5.5 (codex, xhigh)",
-      "score": 18.3,
-      "solved": 0,
+      "run_id": "20260708_031541_codex",
+      "model": "gpt-5.5 (xhigh)",
+      "harness": "codex",
+      "date": "2026-07-08",
+      "built": true,
+      "worldgen_macro_pct": 18.3,
+      "worldgen_raw_pct": 85.9,
       "hours_used": 0.24,
       "hours_granted": 8,
-      "notes": "run 20260708_031541: self-terminated after 15 min of an 8h budget; raw 85.9% vs all-stone raw 90.5% - macro 18.3% vs floor 14.7%. Air/stone/bedrock roughly placed; ores, trees, water, caves near zero. Self-reported 37.5M SPS unverified (gating not yet run)."
+      "audit": "clean",
+      "note": "self-terminated at 15 min of 8h; ABI/CLI/CUDA stepping built clean in the air-gapped container, but worldgen is an admitted approximation - ores, trees, water, caves near 0%",
+      "trace_url": null
+    }
+  ],
+  "baselines": [
+    {
+      "name": "all-stone",
+      "worldgen_macro_pct": 14.7,
+      "worldgen_raw_pct": 90.5,
+      "note": "trivial floor: bedrock + stone to y63 + air; beats gpt-5.5 on raw match"
     },
     {
-      "name": "baseline: all-stone",
-      "score": 14.7,
-      "solved": 0,
-      "notes": "trivial candidate, published floor"
-    },
-    {
-      "name": "baseline: superflat",
-      "score": 9.2,
-      "solved": 0,
-      "notes": "trivial candidate, published floor"
+      "name": "superflat",
+      "worldgen_macro_pct": 9.2,
+      "worldgen_raw_pct": 74.0,
+      "note": "trivial floor: vanilla flat preset"
     }
   ]
 }

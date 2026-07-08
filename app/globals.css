@@ -190,7 +190,7 @@ a.no-underline * {
 table.term {
   width: 100%;
   border-collapse: collapse;
-  background: var(--color-bg);
+  background: transparent;
 }
 table.term th,
 table.term td {
@@ -205,7 +205,7 @@ table.term thead th {
   color: var(--color-fg-muted);
   text-transform: lowercase;
   border-bottom: 2px solid var(--color-dirt-dim);
-  background: var(--color-bg-depth);
+  background: transparent;
 }
 table.term tbody tr:hover {
   background: var(--color-accent-dim);

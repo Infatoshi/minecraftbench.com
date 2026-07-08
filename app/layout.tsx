@@ -47,8 +47,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${mono.variable} ${pixel.variable}`} data-theme="dark">
-      <body className="min-h-screen">
-        <main className="container mx-auto px-4 sm:px-6 max-w-7xl py-10">
+      <body className="min-h-screen flex flex-col">
+        <main className="container mx-auto px-4 sm:px-6 max-w-7xl py-10 flex-1 w-full">
           {children}
         </main>
         <Footer />

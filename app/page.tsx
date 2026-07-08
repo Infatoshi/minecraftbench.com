@@ -3,97 +3,109 @@ import { TerminalHero } from "./terminal-hero"
 
 export default function HomePage() {
   const board = loadRewriteLeaderboard()
-  const topScore = Math.max(...board.models.map((m) => m.score))
+  const best = Math.max(
+    ...board.runs
+      .filter((r) => r.worldgen_macro_pct != null)
+      .map((r) => r.worldgen_macro_pct as number),
+  )
 
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col gap-10">
       <section className="flex flex-col gap-5">
         <h1 className="title-grass">minecraftbench.com</h1>
         <TerminalHero />
-        <p className="text-[var(--color-fg-muted)] max-w-3xl leading-relaxed text-sm">
-          One prompt, one budget, no Minecraft source, no network. Scored by
-          dual execution against the real Java game on seeds drawn at eval
-          time, and on fidelity-gated batched throughput. Methodology lives in{" "}
-          <a href="https://github.com/Infatoshi/minecraftbench.com/blob/master/benchmarks/rewrite/SPEC.md">
-            the repo
-          </a>
-          .
-        </p>
-        <div className="flex flex-wrap gap-3 text-xs">
-          <span className="status-pill status-pill-warn">
-            v0: worldgen leg scored - sim + gated throughput coming
-          </span>
-        </div>
       </section>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-[var(--color-fg-bright)]">
-          Rewrite <span className="text-[var(--color-fg-dim)]">·</span>{" "}
-          <span className="text-sm font-normal text-[var(--color-fg-muted)]">
-            {board.layers.length} scored layers, each strictly harder
-          </span>
-        </h2>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {board.layers.map((l) => (
-            <div key={l.id} className="stat-box">
-              <div className="text-sm text-[var(--color-fg-bright)] font-semibold">
-                {l.title}
-              </div>
-              <div className="text-xs text-[var(--color-fg-muted)] mt-1">
-                {l.metric}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="box overflow-x-auto p-0">
-          <table className="term tabular">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>model</th>
-                <th>composite</th>
-                <th>layers cleared</th>
-                <th>budget used</th>
-                <th className="w-1/3">relative</th>
+      <section className="overflow-x-auto">
+        <table className="term tabular text-xs">
+          <thead>
+            <tr>
+              <th>model</th>
+              <th>harness</th>
+              <th>date</th>
+              <th>built</th>
+              <th>worldgen</th>
+              <th>budget</th>
+              <th>audit</th>
+              <th>note</th>
+              <th>trace</th>
+            </tr>
+          </thead>
+          <tbody>
+            {board.runs.map((r) => (
+              <tr key={r.run_id}>
+                <td className="font-mono text-[var(--color-fg-bright)]">
+                  {r.model}
+                </td>
+                <td>{r.harness}</td>
+                <td className="text-[var(--color-fg-muted)]">{r.date}</td>
+                <td className={r.built ? "cell-score" : "cell-fail"}>
+                  {r.built ? "yes" : "no"}
+                </td>
+                <td
+                  className={
+                    r.worldgen_macro_pct === best ? "cell-winner" : "cell-score"
+                  }
+                  title={
+                    r.worldgen_raw_pct != null
+                      ? `raw block match ${r.worldgen_raw_pct.toFixed(1)}%`
+                      : undefined
+                  }
+                >
+                  {r.worldgen_macro_pct != null
+                    ? `${r.worldgen_macro_pct.toFixed(1)}%`
+                    : "-"}
+                </td>
+                <td className="text-[var(--color-fg-muted)]">
+                  {r.hours_used != null && r.hours_granted != null
+                    ? `${r.hours_used}h / ${r.hours_granted}h`
+                    : "-"}
+                </td>
+                <td
+                  className={
+                    r.audit === "flagged"
+                      ? "cell-fail"
+                      : "text-[var(--color-fg-muted)]"
+                  }
+                >
+                  {r.audit}
+                </td>
+                <td
+                  className="text-[var(--color-fg-muted)] max-w-md"
+                  title={r.note}
+                >
+                  {r.note}
+                </td>
+                <td>
+                  {r.trace_url ? (
+                    <a href={r.trace_url} target="_blank" rel="noopener">
+                      trace
+                    </a>
+                  ) : (
+                    <span className="text-[var(--color-fg-dim)]">-</span>
+                  )}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {board.models.map((m, i) => (
-                <tr key={m.name}>
-                  <td className="text-[var(--color-fg-muted)]">{i + 1}</td>
-                  <td className="font-mono text-[var(--color-fg-bright)]">
-                    {m.name}
-                  </td>
-                  <td className={m.score === topScore ? "cell-winner" : "cell-score"}>
-                    {m.score.toFixed(1)}
-                  </td>
-                  <td>
-                    {m.solved}/{board.layers.length}
-                  </td>
-                  <td className="text-[var(--color-fg-muted)]">
-                    {m.hours_used != null && m.hours_granted != null
-                      ? `${m.hours_used}h / ${m.hours_granted}h`
-                      : "-"}
-                  </td>
-                  <td>
-                    <div className="speed-bar">
-                      <div
-                        className={
-                          m.score === topScore
-                            ? "speed-fill speed-fill-winner"
-                            : "speed-fill"
-                        }
-                        style={{ width: `${(m.score / topScore) * 100}%` }}
-                      />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+            {board.baselines.map((b) => (
+              <tr key={b.name} className="opacity-60">
+                <td className="font-mono">baseline: {b.name}</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td title={`raw block match ${b.worldgen_raw_pct.toFixed(1)}%`}>
+                  {b.worldgen_macro_pct.toFixed(1)}%
+                </td>
+                <td>-</td>
+                <td>-</td>
+                <td className="text-[var(--color-fg-muted)] max-w-md" title={b.note}>
+                  {b.note}
+                </td>
+                <td>-</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </section>
     </div>
   )

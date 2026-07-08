@@ -1,19 +1,26 @@
 import fs from "node:fs"
 import path from "node:path"
 
-export type Layer = {
-  id: string
-  title: string
-  metric: string
+export type RunRow = {
+  run_id: string
+  model: string
+  harness: string
+  date: string
+  built: boolean
+  worldgen_macro_pct: number | null
+  worldgen_raw_pct: number | null
+  hours_used: number | null
+  hours_granted: number | null
+  audit: "clean" | "flagged" | "pending"
+  note: string
+  trace_url: string | null
 }
 
-export type ModelRow = {
+export type BaselineRow = {
   name: string
-  score: number
-  solved: number
-  notes: string
-  hours_used?: number
-  hours_granted?: number
+  worldgen_macro_pct: number
+  worldgen_raw_pct: number
+  note: string
 }
 
 export type Leaderboard = {
@@ -21,14 +28,8 @@ export type Leaderboard = {
   bench: string
   date: string
   note: string
-  layers: Layer[]
-  baselines: {
-    name: string
-    note: string
-    raw_match_pct?: number
-    macro_acc_pct?: number
-  }[]
-  models: ModelRow[]
+  runs: RunRow[]
+  baselines: BaselineRow[]
 }
 
 export function loadRewriteLeaderboard(): Leaderboard {
