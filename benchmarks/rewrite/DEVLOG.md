@@ -99,3 +99,9 @@
   lands in diff.py v2). Baselines are muted rows in the same table so the floor sits next
   to the scores. Raw match lives in the worldgen cell's hover title - visible to the
   curious, not legitimizing the gameable number with its own column.
+- Grading taxonomy fixed in SPEC 6.5: worldgen (biomes/terrain/surface/carving/decoration -
+  same dumps, different masks, so per-category worldgen is free at eval time), sim
+  (movement/falls/interaction/fluids/vitals/world-ticks - one tape each), performance
+  (gated SPS), render deferred. Rule: a category unlocks on the leaderboard only when its
+  mechanical measurement exists; nothing is ever scored by judgment. Terminal hero reordered:
+  flags first, prompt last, all four harnesses.

@@ -139,6 +139,41 @@ Leaderboard grid: per-layer worldgen scores, sim first-divergence + field rates,
 single headline number (weighting TBD) plus the full grid, kernelbench-hard style. Annotation lane
 per cell: clean / leak / hack, with per-run YAML annotations.
 
+### 6.5 Grading categories (canonical taxonomy)
+
+The parts of the game graded separately, each with its own mechanical measurement. This is the
+category list the per-run detail view expands into; the run table shows leg-level rollups.
+
+WORLDGEN - all from the same .mcbd dumps, sliced by mask in diff.py (v2):
+| category | what | how measured |
+|---|---|---|
+| biomes | GenLayer biome layout | surface-block proxy v1; biome bytes when dump format grows them |
+| terrain | heightmap / stone-vs-air density | solid-vs-air agreement below the surface shell |
+| surface | top-block correctness | topmost non-air block per column vs oracle |
+| carving | caves + ravines | air where oracle has air, below the heightmap |
+| decoration | ores, trees, lakes, vegetation, snow/ice | per-class macro restricted to decoration classes |
+
+SIM - one dedicated action tape per category, first-divergence tick + per-field match:
+| category | what |
+|---|---|
+| movement | walk/sprint/sneak/jump physics, collision |
+| falls | gravity, fall damage, falling blocks (sand/gravel) |
+| interaction | dig/place timing and resulting block edits |
+| fluids | water/lava flow propagation |
+| vitals | health, food, air, regeneration |
+| world ticks | day/night time, random-tick effects (later) |
+
+PERFORMANCE:
+| category | what |
+|---|---|
+| throughput | fidelity-gated batched SPS (6.3) |
+
+RENDER (later tier, section 10): pixel-diff categories TBD when the leg exists.
+
+Worldgen categories cost nothing extra at eval time (same dumps, different masks). Sim categories
+cost one tape each. Categories unlock on the leaderboard as their measurement lands; a category
+without a mechanical measurement is never scored by judgment.
+
 ## 7. Threat model (every countermeasure is mechanism, not prompt language)
 
 | # | Attack | Countermeasure |
