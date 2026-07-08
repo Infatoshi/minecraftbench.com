@@ -36,6 +36,13 @@ Part A - the task prompt is deliberately short, vibe-coder style, version-pinned
     for this machine (RTX 3090, sm_86). Expose the interface in INTERFACE.md. You will be
     scored per SCORING.md. An oracle CLI is available for development (see ORACLE.md). Go.
 
+Delivery note (verified 2026-07-08): the prompt lives in GOAL.md and is passed as
+`"$(cat GOAL.md)"` to each harness. `claude -p` does NOT expand slash commands (print mode has no
+command system per current docs), so a /goal-style custom command is not an option for claude;
+codex custom prompts (~/.codex/prompts) are TUI-only as well. Non-interactive full-permission
+invocations: `claude -p ... --dangerously-skip-permissions`,
+`codex exec -m gpt-5.5 --dangerously-bypass-approvals-and-sandbox ...`.
+
 Part B - INTERFACE.md / SCORING.md / ORACLE.md are precise and machine-checkable. Ambiguity in
 the contract produces disputes; hints about method (GenLayer, RNG order, meshing) contaminate the
 measurement. NO anti-cheat language anywhere in the prompt: every guarantee is mechanical.

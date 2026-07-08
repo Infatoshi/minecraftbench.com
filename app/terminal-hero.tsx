@@ -2,15 +2,17 @@
 
 import { useEffect, useState } from "react"
 
-const PROMPT =
-  'rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env. interface in INTERFACE.md, scoring in SCORING.md. go.'
+const GOAL =
+  "rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env. interface in INTERFACE.md, scoring in SCORING.md. go."
 
+// Real flags, verified against each CLI's current docs/help.
 const COMMANDS = [
-  `claude -p "${PROMPT}" --model claude-fable-5`,
-  `codex -p "${PROMPT}" --model gpt-5.5-codex`,
-  `opencode -p "${PROMPT}" --model gemini-3.5-pro`,
-  `claude -p "${PROMPT}" --model claude-opus-4-8`,
-  `codex -p "${PROMPT}" --model grok-5-code`,
+  'claude -p "$(cat GOAL.md)" --model claude-fable-5 --dangerously-skip-permissions',
+  'codex exec -m gpt-5.5 --dangerously-bypass-approvals-and-sandbox "$(cat GOAL.md)"',
+  'claude -p "$(cat GOAL.md)" --model claude-opus-4-8 --dangerously-skip-permissions',
+  'gemini -y -m gemini-3.1-pro "$(cat GOAL.md)"',
+  'grok -p --yolo "$(cat GOAL.md)"',
+  'cursor agent --print --yolo --model composer-2 "$(cat GOAL.md)"',
 ]
 
 const TYPE_MS = 18
@@ -20,9 +22,7 @@ const HOLD_MS = 10000
 export function TerminalHero() {
   const [text, setText] = useState("")
   const [cmdIdx, setCmdIdx] = useState(0)
-  const [phase, setPhase] = useState<"typing" | "holding" | "deleting">(
-    "typing",
-  )
+  const [phase, setPhase] = useState<"typing" | "deleting">("typing")
 
   useEffect(() => {
     const target = COMMANDS[cmdIdx]
@@ -34,7 +34,7 @@ export function TerminalHero() {
       } else {
         t = setTimeout(() => setPhase("deleting"), HOLD_MS)
       }
-    } else if (phase === "deleting") {
+    } else {
       if (text.length > 0) {
         t = setTimeout(() => setText(text.slice(0, -1)), DELETE_MS)
       } else {
@@ -52,12 +52,19 @@ export function TerminalHero() {
         <span className="terminal-dot" />
         <span className="terminal-dot" />
         <span className="terminal-dot" />
-        <span className="terminal-title">anvil: ~/minecraftbench</span>
+        <span className="terminal-title">3090: ~/minecraftbench</span>
       </div>
       <div className="terminal-body">
-        <span className="terminal-ps1">$ </span>
-        <span className="terminal-cmd">{text}</span>
-        <span className="terminal-cursor" />
+        <div className="terminal-static">
+          <span className="terminal-ps1">$ </span>
+          <span className="terminal-cmd">cat GOAL.md</span>
+        </div>
+        <div className="terminal-goal">{GOAL}</div>
+        <div>
+          <span className="terminal-ps1">$ </span>
+          <span className="terminal-cmd">{text}</span>
+          <span className="terminal-cursor" />
+        </div>
       </div>
     </div>
   )

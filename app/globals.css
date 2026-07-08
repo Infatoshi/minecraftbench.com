@@ -371,3 +371,14 @@ pre,
     opacity: 0;
   }
 }
+
+.terminal-static {
+  margin-bottom: 0.1rem;
+}
+
+.terminal-goal {
+  color: var(--color-fg-muted);
+  font-family: var(--font-mono);
+  margin-bottom: 0.65rem;
+  white-space: pre-wrap;
+}
