@@ -64,3 +64,17 @@
 - Open question logged: should the runner re-prompt on early self-termination ("budget
   remains, continue") or is one-shot part of the measurement? Leaning: one-shot IS the
   benchmark - agents that stop early score what they shipped.
+- What run one actually measured (contemplation): AMBITION CALIBRATION, not raw capability.
+  The model knew precisely what the real task was (its own caveat names GenLayer and
+  ChunkProvider) and declined to attempt it, self-imposing a "one pass" frame nothing in the
+  prompt asked for - then treated pass-complete as done at 15 min of an 8h budget. Two
+  distinct quantities to keep separate in analysis and eventually on the site:
+    (a) unsteered judgment: given one prompt and a budget, does the agent decide to climb
+        the real mountain? gpt-5.5 codex: no.
+    (b) steered capability: with a human (or loop) saying "budget remains, keep going,"
+        could it implement + verify seed-faithful worldgen? Plausibly - untested so far.
+  The benchmark as designed scores (a); (b) is the follow-up experiment (continue-loop
+  runner variant). Related failure: it barely used subagents - one early "compatibility
+  notes" helper, no fan-out of GenLayer/carving/decoration as parallel workstreams, i.e. it
+  never tried to warp its effective time budget through parallelism despite the prompt hint
+  and 24 threads. Ambition calibration includes parallelism ambition.
