@@ -203,3 +203,13 @@ articulate the gap between their work and the stated requirement and terminate r
 Whatever governs session length appears to be trained-in calibration/stamina, not prompt
 interpretation. This makes the benchmark's phenomenon robust: it is not an artifact of vague
 prompting. v1 vs v2 rows sit side by side on the board (prompt column) as the ablation.
+
+## 2026-07-08: honesty fix - 2 eval seeds was too few; board reset at 10 seeds
+Every cross-run delta published so far sat on n=2 time-seeds. That made grok's v1-to-v2
+"drop" (35.31 to 30.78) uninterpretable and, honestly, every few-point gap on the board was
+within seed noise. score.sh default is now 10 seeds (~30s oracle time each; ~5 min per eval,
+still cheap). The site table is WIPED rather than asterisked: v1/v2 2-seed numbers stay in
+git history and this log, but the public board only carries 10-seed scores going forward.
+grok-4.5 and gpt-5.5 relaunched under v2 (24h ceiling) to repopulate it; baseline floors
+(all-stone 14.7 / superflat 9.2) will be rescored on the 10-seed protocol alongside the
+first rerun scoring and updated if they move.

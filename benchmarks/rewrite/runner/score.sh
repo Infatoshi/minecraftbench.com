@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Score a collected run through the full worldgen leg:
 #   ./score.sh <RUN_ID> [NSEEDS]
-# Draws NSEEDS (default 2) fresh time-seeds (post-freeze by construction), generates the
+# Draws NSEEDS (default 10) fresh time-seeds (post-freeze by construction), generates the
 # oracle world for each, dumps the candidate in the clean container, diffs, and writes
 # results/runs/<RUN_ID>/scores.json. A candidate that fails to build/dump scores null.
 set -euo pipefail
 
 RUN_ID="${1:?usage: score.sh RUN_ID [NSEEDS]}"
-NSEEDS="${2:-2}"
+NSEEDS="${2:-10}"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BENCH="$(cd "$HERE/.." && pwd)"
 RUN_DIR="$BENCH/results/runs/$RUN_ID"
