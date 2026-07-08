@@ -168,7 +168,9 @@ tiers - strict (native-determinism calibrated ~0.3/channel; sabotage ~69/channel
 window), loose, structural - so renderers climb a ladder instead of sitting at zero. `null` =
 UNSIMULATED sentinel per field: unimplemented features report UNSIMULATED, never "matches
 zero" (false-pass guard). Every graded run renders a side-by-side mp4 (oracle | candidate,
-divergence marked) from the raw frames; video is a viewing artifact, never scored.
+divergence marked) from PER-TICK video/ frames at 20fps - real time, since the game runs 20
+ticks per second (keyframe-only encoding plays as a slideshow; learned on the first smoke
+tape). Video is a viewing artifact, never scored; only keyframe artifacts are graded.
 
 ### 6.3 Throughput (fidelity-gated, same-instance)
 Batched SPS on the 3090 with N envs stepping real tapes. CRITICAL: mid-run, the harness freezes a
