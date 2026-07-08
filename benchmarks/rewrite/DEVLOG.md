@@ -89,3 +89,13 @@
   freedom) - "18.3% in 0.25h of 8h" tells the ambition-calibration story mechanically. A
   steered continue-loop variant may exist later only as a clearly-labeled side experiment,
   never the benchmark.
+- Site stripped to kernelbench shape: terminal + one per-run table, nothing else. Schema v2
+  is per-RUN records (kernelbench convention: a leaderboard is a run log, not a model
+  ranking). Columns, in kernelbench's order logic (identity -> mechanical gates -> score ->
+  cost -> judgment -> links): model | harness | date | built | worldgen | budget | audit |
+  note | trace. Dropped for now: sortable headers and filters (kernelbench earned those at
+  dozens of rows; add when row count justifies), tokens/cost columns (codex Max plan hides
+  spend), per-layer detail (returns as an expandable or per-run page when layer slicing
+  lands in diff.py v2). Baselines are muted rows in the same table so the floor sits next
+  to the scores. Raw match lives in the worldgen cell's hover title - visible to the
+  curious, not legitimizing the gameable number with its own column.
