@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 
 // Real flags, verified against each CLI's current docs/help (2026-07-08).
 const PROMPT =
-  "rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env. interface in INTERFACE.md, scoring in SCORING.md. go."
+  "rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env. spec in SPEC.md, verifier in VERIFIER.md. go."
 
 const COMMANDS = [
   `claude -p "${PROMPT}" --model claude-fable-5 --effort max --dangerously-skip-permissions`,

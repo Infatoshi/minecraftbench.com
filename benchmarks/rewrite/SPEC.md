@@ -32,9 +32,8 @@ agent gets neither).
 
 Part A - the task prompt is deliberately short, vibe-coder style, version-pinned and published:
 
-    Rewrite Minecraft 1.11.2 from scratch in C/CUDA as a PufferLib-style batched environment
-    for this machine (RTX 3090, sm_86). Expose the interface in INTERFACE.md. You will be
-    scored per SCORING.md. An oracle CLI is available for development (see ORACLE.md). Go.
+    rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env. spec in SPEC.md,
+    verifier in VERIFIER.md. go.
 
 Delivery note (live-tested 2026-07-08): the prompt lives in GOAL.md, passed as `"$(cat GOAL.md)"`
 uniformly. `claude -p "/goal"` DOES expand a project .claude/commands/goal.md (tested end to end,
@@ -56,7 +55,10 @@ Verified max-thinking invocations per harness:
 - `cursor agent --print --yolo --model "composer-2.5[fast=true]" ...` (bracket syntax controls
   the fast tier; same weights, faster inference)
 
-Part B - INTERFACE.md / SCORING.md / ORACLE.md are precise and machine-checkable. Ambiguity in
+Part B - the agent-facing docs are precise and machine-checkable, named in field vocabulary:
+SPEC.md (task spec: env ABI, action/obs layout, canonical dump format, dev-time oracle CLI) and
+VERIFIER.md (verifier protocol: dual execution, per-class macro metrics, fidelity gates,
+same-instance throughput gating). Ambiguity in
 the contract produces disputes; hints about method (GenLayer, RNG order, meshing) contaminate the
 measurement. NO anti-cheat language anywhere in the prompt: every guarantee is mechanical.
 
