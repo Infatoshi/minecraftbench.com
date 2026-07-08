@@ -52,6 +52,7 @@ export default function HomePage() {
             <tr>
               <th>model</th>
               <th>harness</th>
+              <th>prompt</th>
               <th>date</th>
               <th>built</th>
               <th>worldgen</th>
@@ -69,6 +70,9 @@ export default function HomePage() {
                   {r.model}
                 </td>
                 <td>{r.harness}</td>
+                <td className="text-[var(--color-fg-muted)]">
+                  v{r.prompt_version ?? 1}
+                </td>
                 <td className="text-[var(--color-fg-muted)]">{r.date}</td>
                 <td className={r.built ? "cell-score" : "cell-fail"}>
                   {r.built ? "yes" : "no"}
@@ -124,6 +128,7 @@ export default function HomePage() {
             {board.baselines.map((b) => (
               <tr key={b.name} className="opacity-60">
                 <td className="font-mono">baseline: {b.name}</td>
+                <td>-</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>

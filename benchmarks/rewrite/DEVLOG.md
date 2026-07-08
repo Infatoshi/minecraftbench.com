@@ -154,3 +154,17 @@ going stale ("current leader" twice now); notes are rank-free from here on.
 Harness detail: grok CLI has no --yolo and effort tops at high; headless is
 `-p --permission-mode bypassPermissions --output-format streaming-json`. Session
 auth (auth.json copy) worked in the sandbox.
+
+## 2026-07-08: prompt v2 - state the bar, remove the stated time limit
+v1 measured uncued ambition calibration; the answer came back "minutes" for every model
+(grok-4.5: 9 min, then led the board). Decision: keep the full scope (batched RL env,
+worldgen, sim, renderer - the whole game) but the prompt now states the success bar
+(bit-identical dumps, strict pixel-diff frames) and says "no time limit, take as long as
+you need." The bar is task definition, not anti-cheat wording; integrity stays mechanical
+and VERIFIER.md now spells the mechanical integrity checks out (post-freeze seeds, no
+JVM/network, mid-run same-instance dumps, size/entropy budgets, bytecode/vendored-source
+scan). ABI grew mcb_render + --render-frame so the render leg is in the contract before
+submissions exist, even though it scores later. Harness keeps a quiet 24h ceiling (ops
+safety, not told to the model as a target); leaderboard gains a prompt column and v1/v2
+runs never compare directly. v2 pilots: grok-4.5 and gpt-5.5 (plan-credit models spared;
+Max plan is scarce right now).

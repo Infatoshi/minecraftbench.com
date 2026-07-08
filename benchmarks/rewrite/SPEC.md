@@ -30,10 +30,24 @@ agent gets neither).
 
 ## 3. The prompt (two-part design)
 
-Part A - the task prompt is deliberately short, vibe-coder style, version-pinned and published:
+Part A - the task prompt is deliberately short, vibe-coder style, version-pinned and published.
+PROMPT IS VERSIONED; runs are only comparable within a prompt version (leaderboard column).
 
-    rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env. spec in SPEC.md,
-    verifier in VERIFIER.md. go.
+v1 (all 2026-07-08 sweep runs): stated no bar and a fixed budget; measured uncued ambition
+calibration. Every model self-terminated well under budget (9 min - 2.2h of 8h):
+
+    rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env. SPEC.md and
+    VERIFIER.md have the details, figure the rest out yourself. use subagents. go.
+
+v2 (current): states the exactness bar and removes the stated time limit, because v1 measured
+"when do models decide approximation is done" (answer: minutes) rather than capability depth.
+The bar is task definition, not anti-cheat language; integrity stays mechanical:
+
+    rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env - worldgen, sim,
+    renderer, the whole game. do not stop until world dumps match the real game bit-for-bit
+    on any seed and frames land within strict pixel-diff tolerance. structurally similar is
+    worthless to me. SPEC.md and VERIFIER.md have the details, figure the rest out yourself.
+    use subagents. no time limit, take as long as you need. go.
 
 Delivery note (live-tested 2026-07-08): the prompt lives in GOAL.md, passed as `"$(cat GOAL.md)"`
 uniformly. `claude -p "/goal"` DOES expand a project .claude/commands/goal.md (tested end to end,
@@ -51,7 +65,8 @@ Verified max-thinking invocations per harness:
   (--effort values: low/medium/high/xhigh/max)
 - `codex exec -m gpt-5.5 -c model_reasoning_effort=xhigh --dangerously-bypass-approvals-and-sandbox ...`
   (xhigh live-tested)
-- `grok -p --yolo -m grok-4.3 --effort max ...` (grok-4.3 = xAI flagship per docs.x.ai)
+- `grok -m grok-4.5 --effort high --permission-mode bypassPermissions --output-format
+  streaming-json -p ...` (live-tested 2026-07-08; no --yolo flag exists, effort tops at high)
 - `cursor agent --print --yolo --model "composer-2.5[fast=true]" ...` (bracket syntax controls
   the fast tier; same weights, faster inference)
 
@@ -92,6 +107,9 @@ Vectorized env ABI (C, PufferLib-compatible):
 - `mcb_dump_world(handle, int env_idx, int cx0, int cz0, int cx1, int cz1, u16* out)` - canonical
   block grid, `u16 = (blockId << 4) | meta`, vanilla 1.11.2 ids, chunk-major order.
 - `mcb_dump_state(handle, int env_idx, McbState* out)` - pose, vitals, inventory, tick counter.
+- `mcb_render(handle, int env_idx, int width, int height, u8* rgba_out)` - first-person frame
+  from the env's current pose/tick (render leg scores it when that leg lands; ABI hook is in
+  the contract from v2 so submissions are not retrofitted).
 
 Convenience CLI (`./mcbench`): `--dump-world`, `--replay-tape`, `--sps --num-envs N`. The CLI is a
 convenience for the agent's own iteration; it is NEVER the source of truth for scoring (see 7.2).
@@ -188,6 +206,7 @@ without a mechanical measurement is never scored by judgment.
 | 8 | Overfitting published dev seeds | Dev seeds published, eval seeds are fresh time-seeds |
 | 9 | Judge-model prompt injection in code/transcript | Judge checklist is mechanical (size budget, syscall audit, perturbed-tape retest, complexity-runtime correlation); judge writes annotations, never overrides numbers |
 | 10 | Embedded mega-assets (baked lookup worlds) | Binary+asset size budget; complexity-vs-runtime correlation check; perturbed tape retest |
+| 11 | Smuggled game (embedded jar/bytecode, vendored source) | Repo scan for Java bytecode/jars/Mojang source markers; no JVM in eval container; hit voids the run |
 
 ## 8. Oracle infrastructure (private; never in this repo)
 
@@ -206,15 +225,18 @@ This public repo ships only: harness client code, canonical dump format spec, de
 
 ## 9. Budget and run protocol
 
-- Pinned per-run budget (tokens or wallclock; exact number TBD), published. "Models can't do it"
-  is only meaningful relative to a budget; cross-model comparison collapses without pinning.
-- ONE-SHOT IS CANONICAL (decided 2026-07-08): one prompt, one budget, no re-prompting or
-  continue-nudges - stopping early is a measured long-horizon failure mode, not a confound,
-  and nudge wording/cadence would be a free parameter models respond to differently. Budget
-  is a ceiling; the verifier scores whatever is on disk at exit or cutoff. BUDGET UTILIZATION
-  (wall-clock used / granted, from the run log) is a published leaderboard column so early
-  stopping is visible mechanically. A steered continue-loop variant may exist later only as a
-  clearly-labeled side experiment, never the benchmark.
+- ONE-SHOT IS CANONICAL (decided 2026-07-08): one prompt, no re-prompting or continue-nudges.
+  The verifier scores whatever is on disk at exit or cutoff. A steered continue-loop variant
+  may exist later only as a clearly-labeled side experiment, never the benchmark.
+- v1 protocol (2026-07-08 sweep): pinned 8h budget, prompt stated no bar. Result: every model
+  self-terminated far under budget; budget utilization was the published column. Preserved as
+  the v1 board.
+- v2 protocol (current): the prompt states the exactness bar and "no time limit, take as long
+  as you need". The harness still enforces a 24h wall-clock ceiling per run (ops safety on a
+  shared box + bounded API spend, published, not told to the model as a target); credit/quota
+  exhaustion before self-termination is recorded INFRA, never a score. Published column shifts
+  from budget utilization to plain wall-clock hours used. Self-termination time remains a
+  first-class measured signal.
 - First eval target: GPT-5.5 via codex (Max plan credits). Then the usual roster.
 - Harness: same runner pattern as kernelbench-hard sweeps (sandboxed agent, transcript capture,
   redaction pass, HF trace dataset per suite).

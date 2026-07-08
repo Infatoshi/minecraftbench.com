@@ -15,6 +15,8 @@ A repo that builds with `make` at the root, producing:
    - `void  mcb_step(void* h, const McbAction* actions);`  // one action per env, one tick
    - `void  mcb_obs(void* h, McbObs* out);`                // fills per-env observation structs
    - `int   mcb_dump_world(void* h, int env_idx, int cx0, int cz0, int cx1, int cz1, uint16_t* out);`
+   - `int   mcb_render(void* h, int env_idx, int width, int height, uint8_t* rgba_out);`
+     // first-person frame from the env's current pose/tick, row-major RGBA8
    - `void  mcb_close(void* h);`
    - McbAction: uint8 forward, back, left, right, jump, sneak, sprint, attack, use;
      int8 hotbar (-1 = no change, else 0-8); int8 dyaw, dpitch (units of 15 degrees).
@@ -26,6 +28,8 @@ A repo that builds with `make` at the root, producing:
    - `./mcbench --dump-world --seed S --cx0 A --cz0 B --cx1 C --cz1 D --out FILE`
      writes the canonical .mcbd dump (format below).
    - `./mcbench --sps --num-envs N --ticks T --seed S` prints steady-state env-steps/sec.
+   - `./mcbench --render-frame --seed S --x X --y Y --z Z --yaw A --pitch B --width W
+     --height H --out FILE.png` writes one frame (PNG, RGBA8) via mcb_render.
 
 ## Canonical dump format (.mcbd)
 

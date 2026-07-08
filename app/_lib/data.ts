@@ -12,6 +12,7 @@ export type RunRow = {
   hours_used: number | null
   hours_granted: number | null
   cost_usd?: number | null
+  prompt_version?: number
   audit: "clean" | "flagged" | "pending"
   note: string
   trace_url: string | null

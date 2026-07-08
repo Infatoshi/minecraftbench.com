@@ -1,1 +1,1 @@
-rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env. SPEC.md and VERIFIER.md have the details, figure the rest out yourself. use subagents. go.
+rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env - worldgen, sim, renderer, the whole game. do not stop until world dumps match the real game bit-for-bit on any seed and frames land within strict pixel-diff tolerance. structurally similar is worthless to me. SPEC.md and VERIFIER.md have the details, figure the rest out yourself. use subagents. no time limit, take as long as you need. go.

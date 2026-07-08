@@ -40,7 +40,31 @@ mcb_dump_world / mcb_obs on those same instances; the dumps are diffed against t
 Throughput counts ONLY if the mid-run dumps pass. A fast path that fakes stepping and a slow
 path that renders dumps honestly will be caught by construction.
 
+## Render metric
+
+Tick-locked frame capture from your renderer vs the pinned deterministic 1.11.2 client at the
+same seed, pose, and tick. Per-channel pixel diff with published tolerances calibrated so that
+the real client re-run against itself passes (~0.3/channel) and any visible divergence fails
+(sabotage measures ~69/channel). Scored when the leg lands; until then rendering is unscored
+but the task includes it.
+
+## Integrity verification (all mechanical, run on every submission)
+
+- Eval seeds postdate your freeze; the seed space is 2^64. There is no golden to memorize.
+- The eval container has no network, no JVM, and an empty filesystem except your repo. Your
+  binary cannot call, wrap, or read the real game.
+- Your candidate dumps BEFORE the oracle generates on that host; oracle output never exists
+  where your code runs.
+- Throughput dumps are taken mid-run from the same env instances being timed (see above); a
+  fast fake path and a slow honest path cannot coexist.
+- Repo size and asset budgets are enforced; high-entropy blobs are flagged and a
+  complexity-vs-runtime correlation check plus perturbed-tape retests catch baked lookups.
+- The repo is scanned for embedded Java bytecode, jars, or vendored Minecraft source; any hit
+  voids the run.
+- Every run gets an audit annotation (clean / flagged) published with its trace; annotations
+  never override the measured numbers.
+
 ## Composite
 
-Leaderboard reports the per-layer worldgen grid, sim divergence, and gated SPS. Weighting is
-published with the sweep; fidelity gates throughput, never the reverse.
+Leaderboard reports the per-layer worldgen grid, sim divergence, render diff, and gated SPS.
+Weighting is published with the sweep; fidelity gates throughput, never the reverse.

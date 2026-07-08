@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 // Real flags, verified against each CLI's current docs/help (2026-07-08).
 // Keep in sync with benchmarks/rewrite/agent/prompt.txt - this is the real prompt, verbatim.
 const PROMPT =
-  "rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env. SPEC.md and VERIFIER.md have the details, figure the rest out yourself. use subagents. go."
+  "rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env - worldgen, sim, renderer, the whole game. do not stop until world dumps match the real game bit-for-bit on any seed and frames land within strict pixel-diff tolerance. structurally similar is worthless to me. SPEC.md and VERIFIER.md have the details, figure the rest out yourself. use subagents. no time limit, take as long as you need. go."
 
 const COMMANDS = [
   `claude -p --model claude-fable-5 --effort max --dangerously-skip-permissions "${PROMPT}"`,

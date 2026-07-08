@@ -2,7 +2,7 @@
   "schema_version": 2,
   "bench": "rewrite",
   "date": "2026-07-08",
-  "note": "Per-run records. worldgen = macro-averaged per-block-class accuracy vs the real Java game over time-seeds drawn after the run froze (v0 scores the worldgen leg; sim tick-trace and fidelity-gated SPS land next). Raw artifacts: benchmarks/rewrite/results/runs/.",
+  "note": "Per-run records. worldgen = macro-averaged per-block-class accuracy vs the real Java game over time-seeds drawn after the run froze (v0 scores the worldgen leg; sim tick-trace and fidelity-gated SPS land next). Raw artifacts: benchmarks/rewrite/results/runs/. Prompt is versioned (SPEC section 3); scores compare within a prompt version only. All v1 runs used a fixed 8h budget with no stated bar; v2 states the bit-exact bar with no stated time limit.",
   "runs": [
     {
       "run_id": "20260708_143923_grok_grok-4.5",
@@ -17,7 +17,8 @@
       "cost_usd": null,
       "audit": "clean",
       "note": "self-terminated at 9 min of 8h and still tops the board: first to place dirt/grass (70%) and sand/gravel (30%), first nonzero ores/leaves/wood; signed off with 'structurally correct, not bit-identical to Java yet'",
-      "trace_url": null
+      "trace_url": null,
+      "prompt_version": 1
     },
     {
       "run_id": "20260708_122021_claude_claude-fable-5",
@@ -32,7 +33,8 @@
       "cost_usd": null,
       "audit": "flagged",
       "note": "INFRA, not a fail: killed mid-refactor by Max-plan credit exhaustion (429 wall at 61 min, 112 turns, 1.24M output tokens), leaving the tree uncompilable. Also the only run attempting vanilla-exact worldgen (Java Random, noise, carving) and the only one using git. Rerun pending",
-      "trace_url": null
+      "trace_url": null,
+      "prompt_version": 1
     },
     {
       "run_id": "20260708_105448_claude_claude-opus-4-8",
@@ -47,7 +49,8 @@
       "cost_usd": null,
       "audit": "clean",
       "note": "first to crack sea level - water 88%, lava 55%, air 99.5% - and raw match ties all-stone while macro is +11 over it; ores/trees/caves still ~0%",
-      "trace_url": null
+      "trace_url": null,
+      "prompt_version": 1
     },
     {
       "run_id": "20260708_071531_zai-claude_glm-5.2",
@@ -62,7 +65,8 @@
       "cost_usd": 96.43,
       "audit": "clean",
       "note": "grinds longest of the sweep and first to place real water (50%) - but ores, trees, vegetation, caves still ~0%",
-      "trace_url": null
+      "trace_url": null,
+      "prompt_version": 1
     },
     {
       "run_id": "20260708_061312_kimi-claude_kimi-k2.7-code",
@@ -77,7 +81,8 @@
       "cost_usd": 22.87,
       "audit": "clean",
       "note": "best stone shaping of the sweep (78.8%) but nothing beyond air/stone/bedrock; initial eval-container header mismatch was a harness bug, rescored after parity fix",
-      "trace_url": null
+      "trace_url": null,
+      "prompt_version": 1
     },
     {
       "run_id": "20260708_101106_minimax-claude_MiniMax-M3",
@@ -92,7 +97,8 @@
       "cost_usd": 67.14,
       "audit": "clean",
       "note": "builds, but violates the dump contract twice: 32-byte .mcbd header (drops dim/reserved fields) and --out path handling writes to a corrupted filename - no scoreable dump",
-      "trace_url": null
+      "trace_url": null,
+      "prompt_version": 1
     },
     {
       "run_id": "20260708_092809_deepseek-claude_deepseek-v4-pro",
@@ -107,7 +113,8 @@
       "cost_usd": 16.59,
       "audit": "clean",
       "note": "cheapest scored run; air/stone/bedrock only, weakest air placement of the sweep (83.5%) - everything else ~0%",
-      "trace_url": null
+      "trace_url": null,
+      "prompt_version": 1
     },
     {
       "run_id": "20260708_031541_codex",
@@ -121,7 +128,8 @@
       "hours_granted": 8,
       "audit": "clean",
       "note": "self-terminated at 15 min of 8h; ABI/CLI/CUDA stepping built clean in the air-gapped container, but worldgen is an admitted approximation - ores, trees, water, caves near 0%",
-      "trace_url": null
+      "trace_url": null,
+      "prompt_version": 1
     }
   ],
   "baselines": [
