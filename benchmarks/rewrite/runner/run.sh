@@ -49,7 +49,8 @@ LOG="/home/mcbench/runs/${RUN_ID}.log"
 
 # stage the sandbox: exactly prompt.txt + SPEC.md + VERIFIER.md, a fresh git repo
 sudo -u mcbench mkdir -p "$WORKDIR"
-sudo cp "$AGENT_DIR/SPEC.md" "$AGENT_DIR/VERIFIER.md" "$AGENT_DIR/prompt.txt" "$WORKDIR/"
+sudo cp "$AGENT_DIR/SPEC.md" "$AGENT_DIR/VERIFIER.md" "$AGENT_DIR/prompt.txt" \
+  "$AGENT_DIR/tape_sample.json" "$WORKDIR/"
 if [[ $SMOKE -eq 1 ]]; then
   echo "smoke test: write hello.c printing hello and a Makefile building it, run make, then stop." \
     | sudo tee "$WORKDIR/prompt.txt" >/dev/null
