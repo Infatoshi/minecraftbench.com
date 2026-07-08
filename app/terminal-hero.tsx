@@ -2,15 +2,13 @@
 
 import { useEffect, useState } from "react"
 
-const GOAL =
-  "rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env. interface in INTERFACE.md, scoring in SCORING.md. go."
 
 // Real flags, verified against each CLI's current docs/help (2026-07-08).
 const COMMANDS = [
-  'claude -p "/goal $(cat GOAL.md)" --model claude-fable-5 --effort max --dangerously-skip-permissions',
-  'codex exec -m gpt-5.5 -c model_reasoning_effort=xhigh --dangerously-bypass-approvals-and-sandbox "$(cat GOAL.md)"',
-  'grok -p --yolo -m grok-4.3 --effort max "$(cat GOAL.md)"',
-  'cursor agent --print --yolo --model "composer-2.5[fast=true]" "$(cat GOAL.md)"',
+  'claude -p "/goal GOAL.md" --model claude-fable-5 --effort max --dangerously-skip-permissions',
+  'codex exec -m gpt-5.5 -c model_reasoning_effort=xhigh --dangerously-bypass-approvals-and-sandbox "/goal GOAL.md"',
+  'grok -p --yolo -m grok-4.3 --effort max "/goal GOAL.md"',
+  'cursor agent --print --yolo --model "composer-2.5[fast=true]" "/goal GOAL.md"',
 ]
 
 const TYPE_MS = 18
@@ -61,11 +59,6 @@ export function TerminalHero() {
         <span className="terminal-title">3090: ~/minecraftbench</span>
       </div>
       <div className="terminal-body">
-        <div className="terminal-static">
-          <span className="terminal-ps1">$ </span>
-          <span className="terminal-cmd">cat GOAL.md</span>
-        </div>
-        <div className="terminal-goal">{GOAL}</div>
         <div
           className="terminal-cmdline"
           onClick={copy}
