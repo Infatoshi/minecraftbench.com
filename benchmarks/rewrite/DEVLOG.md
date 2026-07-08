@@ -110,3 +110,9 @@
   did not, failing honest builds. Fixed with CPATH/LIBRARY_PATH in eval/Dockerfile. Rule
   derived: the eval container must mirror the dev sandbox's default search paths - a
   build that succeeds where the agent developed must succeed at eval.
+- Second eval-parity bug (minimax run): candidates may ship artifacts built in the dev
+  sandbox (Ubuntu 24.04 / glibc 2.39); the 22.04 eval base couldn't link them
+  (fmod@GLIBC_2.38). Eval image re-based to nvidia/cuda:12.8.1-devel-ubuntu24.04 = the dev
+  host. MiniMax-M3 then failed on its own merits: 32-byte .mcbd header (drops dim/reserved)
+  + corrupted --out path handling. First format-conformance casualty; scored built=yes,
+  worldgen=null.
