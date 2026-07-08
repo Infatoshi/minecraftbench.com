@@ -116,3 +116,19 @@
   host. MiniMax-M3 then failed on its own merits: 32-byte .mcbd header (drops dim/reserved)
   + corrupted --out path handling. First format-conformance casualty; scored built=yes,
   worldgen=null.
+- OVERNIGHT SWEEP COMPLETE (7 models, all one-shot 8h ceilings). Final board (worldgen macro,
+  fresh time-seeds per run): opus-4.8 25.63 (first past the raw-match illusion: raw ties
+  all-stone at ~90 while macro +11; water 88%, lava 55%), glm-5.2 20.37 ($96!), gpt-5.5 18.3
+  (0.24h), kimi-k2.7 17.5 ($23), deepseek-v4-pro 16.82 ($17), MiniMax-M3 no score (32-byte
+  header + broken --out; $67), claude-fable-5 no score. Floor: all-stone 14.7.
+- Fable-5 is the finding of the night: the ONLY run attempting vanilla-exact worldgen
+  (jrand nextInt overflow semantics, Improved/Octaves/Simplex noise, vanilla-exact
+  caves/ravines, chunk populate cascade) and the only one committing to git (8 real
+  commits) - then declared done at 61 min with an uncompilable tree (its features.h ->
+  feat.h rename left feat_trees.c stale). One-shot protocol scores the broken tree: null.
+  Highest ambition, zero score; ambition calibration cuts both ways.
+- Universal gaps after 7 runs: ores/trees/vegetation/caves ~0% for every scored model (the
+  RNG-draw-order wall), and zero models except fable used git. Score ordering tracks grind
+  time more than model tier below the top: glm (2.2h) > gpt-5.5 (0.24h) despite tier gap.
+- Cost reality: "cheap API" spread 4x-6x per run at similar quality (deepseek $17 / kimi
+  $23 vs minimax $67 / zai $96). deepseek+kimi are the regression-test workhorses.
