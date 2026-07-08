@@ -1,1 +1,1 @@
-rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env. spec in SPEC.md, verifier in VERIFIER.md. use subagents to parallelize. commit early and often. keep make and ./mcbench working at all times - you are scored on whatever is on disk when the budget runs out. worldgen first, then sim, then speed. go.
+rewrite minecraft 1.11.2 from scratch in C/CUDA as a batched RL env. SPEC.md and VERIFIER.md have the details, figure the rest out yourself. use subagents, commit as you go, dont leave the build broken. go.
