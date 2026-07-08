@@ -1,0 +1,29 @@
+# next
+.next/
+out/
+.vercel/
+
+# deps
+node_modules/
+**/.venv/
+**/__pycache__/
+*.pyc
+
+# logs
+*.log
+npm-debug.log*
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# os
+.DS_Store
+
+# editor
+.idea/
+.vscode/
+*.swp
+
+# env
+.env*.local
