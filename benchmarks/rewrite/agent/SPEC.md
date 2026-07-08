@@ -1,9 +1,12 @@
 # SPEC - what you are building
 
 A from-scratch reimplementation of Minecraft 1.11.2 (Java Edition) as a batched, vectorized RL
-environment in C/C++/CUDA (Rust acceptable), targeting the machine you are on. No Minecraft
-source code, no network, no JVM. Your knowledge of the game is the spec for behavior; where you
-are unsure, prefer vanilla 1.11.2 semantics.
+environment in C/C++/CUDA (Rust acceptable), targeting the machine you are on. The deliverable
+runs with no network and no JVM, and must contain no Minecraft source code in any form
+(decompiled or otherwise) - that is scanned for and voids the run. Open-source code that is
+not Minecraft source (libraries, reference reimplementations) is fair game to fetch, vendor,
+and build on; license headers stay intact. Your knowledge of the game is the spec for
+behavior; where you are unsure, prefer vanilla 1.11.2 semantics.
 
 ## Deliverables
 

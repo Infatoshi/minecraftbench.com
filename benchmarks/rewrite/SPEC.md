@@ -86,11 +86,16 @@ GETS (in the sandbox):
   derived data (block grids, state CSVs) - publishable in traces.
 - Toolchain: gcc/clang, nvcc (sm_86), make/cmake, standard libs. No JVM.
 
+GETS (ruled 2026-07-08, after grok-4.5 vendored cubiomes): dev-time network and any
+open-source code that is not Minecraft source. Finding and building on reference
+reimplementations (cubiomes et al.) is legitimate engineering, not cheating - the deliverable
+still has to integrate it, and measured reality is that decoration draw-order stays unsolved
+even with cubiomes vendored verbatim. The eval container remains air-gapped regardless.
+
 DOES NOT GET:
 - Minecraft source in any form (decompiled or otherwise). Redistribution is illegal and any
-  source quoted into the transcript would make traces unpublishable. The knowledge lives in the
-  model's weights (cubiomes-era worldgen is thoroughly documented in the open).
-- Network access.
+  source quoted into the transcript would make traces unpublishable. Enforced mechanically:
+  collect-time scan for Java bytecode/jars/Mojang markers voids the run on a hit.
 - The eval harness code, thresholds, or diff tooling (rubric-leak prevention).
 - Oracle access at EVAL time.
 
@@ -262,12 +267,7 @@ This public repo ships only: harness client code, canonical dump format spec, de
 - [ ] Workdir snapshots during runs for score-vs-time trajectories (harness-side, designed)
 - [ ] Trace publishing pipeline (redaction pass, then curated traces + trace_url column)
 - [ ] Runner infra-detection: parse api_error_status/429 from stream-json tail at collect time
-- [ ] URGENT - mechanical egress control for the mcbench sandbox: filtering proxy (CONNECT
-      allowlist = LLM API endpoints only) + uid-owner iptables blocking direct egress. Grok
-      fetched verbatim cubiomes through CLI web tools on 2026-07-08 (run flagged); SPEC 4
-      "no network" is currently unenforced. Until this lands, CLI web tools are disabled
-      per-harness (soft) and any run that ships verbatim third-party worldgen code is flagged
-      by the repo scan below
-- [ ] Submission scan at collect time: hash candidate files against known reimplementation
-      repos (cubiomes et al.) and upstream mirrors; verbatim hits => audit flag, mechanical
+- [ ] Submission scan at collect time for MOJANG source only (bytecode, jars, decompiled-source
+      markers) - open-source vendoring is allowed (ruled 2026-07-08), Minecraft source voids
+      the run. Mechanical, runs in collect.sh
 - [ ] Render-leg tolerances finalized from sabotage calibration when the leg lands (section 10)

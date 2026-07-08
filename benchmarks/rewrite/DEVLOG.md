@@ -234,3 +234,21 @@ carries two urgent items - a filtering-proxy egress allowlist (the mechanical fi
 collect-time hash scan of candidate files against known reimplementation repos. Baselines
 also rescored on today's 20 oracle windows: all-stone 14.44, superflat 9.13 (the 2-seed-era
 numbers were honest within 0.3).
+
+## 2026-07-08: correction - cubiomes vendoring ruled LEGITIMATE; grok-4.5 unflagged
+The flag was wrong on two counts. First, the model was never actually told "no network": the
+design SPEC said it, but the agent-facing SPEC's "no network, no JVM" sentence describes the
+DELIVERABLE's runtime (which grok honored - cubiomes is compiled in, the artifact is
+air-gapped clean). Rules the agent never saw cannot be violated. Second and more important,
+the user's ruling: finding and building on an open-source worldgen reimplementation is
+legitimate - arguably the preferable - engineering, exactly what a strong human contractor
+would do. The bench measures delivered fidelity, not ideological purity about provenance.
+Changes: grok-4.5 74.75 is now audit=clean with the vendoring described in its note;
+agent SPEC explicitly allows fetching/vendoring non-Minecraft open source (license headers
+intact) and states the only hard ban - Minecraft source in any form, scanned mechanically;
+design SPEC 4 rewritten; egress-proxy TODO dropped (only the Mojang-source collect scan
+remains); --disable-web-search reverted (web tools stay on for all harnesses).
+Standing lesson for the writeup: the interesting integrity line is not "did it use the
+internet" but "did it ship the banned thing," and the only banned thing here is Mojang's
+own code. Measured bonus finding stands either way: even verbatim cubiomes leaves
+leaves/wood <50% - the decoration wall is about draw-order integration, not knowledge.
