@@ -10,7 +10,6 @@ const COMMANDS = [
   'claude -p "$(cat GOAL.md)" --model claude-fable-5 --dangerously-skip-permissions',
   'codex exec -m gpt-5.5 --dangerously-bypass-approvals-and-sandbox "$(cat GOAL.md)"',
   'claude -p "$(cat GOAL.md)" --model claude-opus-4-8 --dangerously-skip-permissions',
-  'gemini -y -m gemini-3.1-pro "$(cat GOAL.md)"',
   'grok -p --yolo "$(cat GOAL.md)"',
   'cursor agent --print --yolo --model composer-2 "$(cat GOAL.md)"',
 ]
