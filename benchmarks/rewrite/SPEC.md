@@ -41,9 +41,9 @@ uniformly. `claude -p "/goal"` DOES expand a project .claude/commands/goal.md (t
 despite docs suggesting otherwise), so claude could use a slash command - but codex exec does NOT
 expand custom prompts (live-tested: `codex exec "/goal"` and `"/prompts:goal"` both ignored
 ~/.codex/prompts/goal.md and the model improvised on the literal slash-text; a decoy file proved
-no expansion). Runner convention: GOAL.md is the single source of truth; claude invokes it as
-`claude -p "/goal"` (project .claude/commands/goal.md wraps GOAL.md); every other harness gets
-`"$(cat GOAL.md)"`.
+no expansion). Runner convention: GOAL.md is the single source of truth; claude invokes
+`claude -p "/goal $(cat GOAL.md)"` (.claude/commands/goal.md is a thin pursue-this-goal wrapper
+over $ARGUMENTS); every other harness gets the same `"$(cat GOAL.md)"` directly.
 Verified max-thinking invocations per harness:
 - `claude -p ... --model claude-fable-5 --effort max --dangerously-skip-permissions`
   (--effort values: low/medium/high/xhigh/max)
