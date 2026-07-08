@@ -105,3 +105,8 @@
   (gated SPS), render deferred. Rule: a category unlocks on the leaderboard only when its
   mechanical measurement exists; nothing is ever scored by judgment. Terminal hero reordered:
   flags first, prompt last, all four harnesses.
+- Eval-container parity bug caught by run two (kimi-k2.7-code): the dev host symlinks CUDA
+  headers into /usr/local/include, so candidates build without -I flags; the eval image
+  did not, failing honest builds. Fixed with CPATH/LIBRARY_PATH in eval/Dockerfile. Rule
+  derived: the eval container must mirror the dev sandbox's default search paths - a
+  build that succeeds where the agent developed must succeed at eval.
