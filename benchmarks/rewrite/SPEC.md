@@ -41,11 +41,12 @@ uniformly. `claude -p "/goal"` DOES expand a project .claude/commands/goal.md (t
 despite docs suggesting otherwise), so claude could use a slash command - but codex exec does NOT
 expand custom prompts (live-tested: `codex exec "/goal"` and `"/prompts:goal"` both ignored
 ~/.codex/prompts/goal.md and the model improvised on the literal slash-text; a decoy file proved
-no expansion). Runner convention: GOAL.md is the single source of truth and every harness gets the identical
-prompt string `"/goal GOAL.md"`. For claude, .claude/commands/goal.md is a thin wrapper ("read
-the file in $ARGUMENTS and pursue it as your goal"); for the others the literal text works
-because the agent interprets it and reads the file (the codex live test demonstrated exactly
-this literal-interpretation behavior). No shell substitution anywhere.
+no expansion). Runner convention: the prompt lives in a single `prompt.txt` (the only prompt file, ever) and
+the runner passes its contents verbatim as the prompt argument to every harness. The site shows
+the full prompt inline in each command so visitors see exactly what the models were told -
+nothing hidden behind a filename. (Historical note, live-tested: `claude -p "/goal ..."` does
+expand project slash commands; codex exec does not. Moot now - verbatim inline is the
+convention.)
 Verified max-thinking invocations per harness:
 - `claude -p ... --model claude-fable-5 --effort max --dangerously-skip-permissions`
   (--effort values: low/medium/high/xhigh/max)
