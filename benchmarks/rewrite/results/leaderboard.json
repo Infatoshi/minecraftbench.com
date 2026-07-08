@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "bench": "rewrite",
+  "date": "2026-07-07",
+  "note": "EXAMPLE PLACEHOLDER DATA - no runs yet. Schema will grow per-layer worldgen scores, sim divergence, gated SPS per SPEC.md 6.4.",
+  "layers": [
+    { "id": "biomes", "title": "Biome map", "metric": "per-class macro acc %" },
+    { "id": "terrain", "title": "Terrain shape", "metric": "per-class macro acc %" },
+    { "id": "surface", "title": "Surface blocks", "metric": "per-class macro acc %" },
+    { "id": "caves", "title": "Caves / carving", "metric": "per-class macro acc %" },
+    { "id": "decoration", "title": "Decoration (ores/trees/features)", "metric": "per-class macro acc %" },
+    { "id": "sim", "title": "Sim tick-trace", "metric": "first-divergence tick" },
+    { "id": "sps", "title": "Batched throughput", "metric": "fidelity-gated SPS" }
+  ],
+  "baselines": [
+    { "name": "all-stone", "note": "trivial baseline, not yet measured" },
+    { "name": "superflat", "note": "trivial baseline, not yet measured" },
+    { "name": "biomes-only", "note": "trivial baseline, not yet measured" }
+  ],
+  "models": [
+    { "name": "example-model-a", "score": 41.2, "solved": 4, "notes": "placeholder" },
+    { "name": "example-model-b", "score": 33.7, "solved": 3, "notes": "placeholder" },
+    { "name": "example-model-c", "score": 24.9, "solved": 2, "notes": "placeholder" },
+    { "name": "example-model-d", "score": 12.4, "solved": 1, "notes": "placeholder" }
+  ]
+}

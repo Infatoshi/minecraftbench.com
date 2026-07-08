@@ -1,7 +1,7 @@
 import fs from "node:fs"
 import path from "node:path"
 
-export type Task = {
+export type Layer = {
   id: string
   title: string
   metric: string
@@ -19,15 +19,16 @@ export type Leaderboard = {
   bench: string
   date: string
   note: string
-  tasks: Task[]
+  layers: Layer[]
+  baselines: { name: string; note: string }[]
   models: ModelRow[]
 }
 
-export function loadSurvivalLeaderboard(): Leaderboard {
+export function loadRewriteLeaderboard(): Leaderboard {
   const file = path.join(
     process.cwd(),
     "benchmarks",
-    "survival",
+    "rewrite",
     "results",
     "leaderboard.json",
   )

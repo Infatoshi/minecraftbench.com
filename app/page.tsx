@@ -1,7 +1,7 @@
-import { loadSurvivalLeaderboard } from "@/app/_lib/data"
+import { loadRewriteLeaderboard } from "@/app/_lib/data"
 
 export default function HomePage() {
-  const board = loadSurvivalLeaderboard()
+  const board = loadRewriteLeaderboard()
   const topScore = Math.max(...board.models.map((m) => m.score))
 
   return (
@@ -11,34 +11,38 @@ export default function HomePage() {
           minecraftbench.com
         </h1>
         <p className="text-[var(--color-fg-muted)] max-w-3xl leading-relaxed">
-          Open agentic Minecraft benchmark results. Frontier LLM agents are
-          dropped into vanilla survival Minecraft and graded on what they can
-          actually do: gather, craft, build, survive. Every run ships with full
-          agent transcripts, the harness source, and machine-readable results.
+          One prompt: rewrite Minecraft 1.11.2 from scratch in C/CUDA as a
+          batched, PufferLib-style RL environment for a pinned RTX 3090. An
+          autonomous LLM coding agent gets a toolchain, a black-box oracle CLI,
+          and a budget - no Minecraft source, no network. It is judged by dual
+          execution against the real Java game on seeds derived from the clock
+          at eval time, and on fidelity-gated batched throughput. We bet
+          frontier models cannot do this end to end. This bench measures how
+          far they get.
         </p>
         <div className="flex flex-wrap gap-3 text-xs">
           <span className="status-pill status-pill-warn">
-            example data — first real sweep coming soon
+            example data - first sweep (gpt-5.5) coming soon
           </span>
         </div>
       </section>
 
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-bold text-[var(--color-fg-bright)]">
-          Survival <span className="text-[var(--color-fg-dim)]">·</span>{" "}
+          Rewrite <span className="text-[var(--color-fg-dim)]">·</span>{" "}
           <span className="text-sm font-normal text-[var(--color-fg-muted)]">
-            {board.tasks.length} tasks, vanilla survival, hard difficulty
+            {board.layers.length} scored layers, each strictly harder
           </span>
         </h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {board.tasks.map((t) => (
-            <div key={t.id} className="stat-box">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {board.layers.map((l) => (
+            <div key={l.id} className="stat-box">
               <div className="text-sm text-[var(--color-fg-bright)] font-semibold">
-                {t.title}
+                {l.title}
               </div>
               <div className="text-xs text-[var(--color-fg-muted)] mt-1">
-                metric: {t.metric}
+                {l.metric}
               </div>
             </div>
           ))}
@@ -50,8 +54,8 @@ export default function HomePage() {
               <tr>
                 <th>#</th>
                 <th>model</th>
-                <th>score</th>
-                <th>tasks solved</th>
+                <th>composite</th>
+                <th>layers cleared</th>
                 <th className="w-1/3">relative</th>
               </tr>
             </thead>
@@ -66,7 +70,7 @@ export default function HomePage() {
                     {m.score.toFixed(1)}
                   </td>
                   <td>
-                    {m.solved}/{board.tasks.length}
+                    {m.solved}/{board.layers.length}
                   </td>
                   <td>
                     <div className="speed-bar">
@@ -87,47 +91,66 @@ export default function HomePage() {
         </div>
         <p className="text-xs text-[var(--color-fg-dim)]">
           Placeholder leaderboard rendered from{" "}
-          <code>benchmarks/survival/results/leaderboard.json</code> at build
-          time — swap in real run data and push to update the site.
+          <code>benchmarks/rewrite/results/leaderboard.json</code> at build
+          time. Scores are macro-averaged per-block-class accuracy above
+          published trivial baselines (all-stone, superflat, biomes-only) -
+          never raw block match.
         </p>
       </section>
 
       <section className="flex flex-col gap-3">
         <h2 className="text-xl font-bold text-[var(--color-fg-bright)]">
-          How it works
+          Why it cannot be reward-hacked
         </h2>
         <div className="grid sm:grid-cols-3 gap-3">
           <div className="box">
             <div className="text-[var(--color-accent)] font-semibold text-sm mb-1">
-              1. Harness
+              Time-seed dual execution
             </div>
             <p className="text-xs text-[var(--color-fg-muted)] leading-relaxed">
-              Each agent controls a Minecraft player through a scripted
-              interface (e.g. Mineflayer bot) inside a sandboxed vanilla
-              server. Same seed, same spawn, same tool budget for every model.
+              Eval seeds are hashed from the wallclock after the submission is
+              frozen. The candidate dumps its world first, in a clean container
+              with no JVM and no network; the real Java game generates truth
+              afterwards. No golden exists before eval starts, so there is
+              nothing to memorize or embed.
             </p>
           </div>
           <div className="box">
             <div className="text-[var(--color-accent)] font-semibold text-sm mb-1">
-              2. Tasks
+              Same-instance throughput gating
             </div>
             <p className="text-xs text-[var(--color-fg-muted)] leading-relaxed">
-              Objective tasks are checked programmatically (inventory, world
-              state); build-quality tasks are rubric-graded with published
-              rubrics and screenshots.
+              Mid-throughput-run, random envs from the running batch are frozen
+              and dumped through the same ABI producing the SPS number, then
+              diffed against the oracle. A fast-fake step path or stub sim
+              fails the very run it is trying to score.
             </p>
           </div>
           <div className="box">
             <div className="text-[var(--color-accent)] font-semibold text-sm mb-1">
-              3. Artifacts
+              Baseline-corrected metrics
             </div>
             <p className="text-xs text-[var(--color-fg-muted)] leading-relaxed">
-              Every run publishes its full agent transcript, world snapshots,
-              and machine-readable scores. What is on disk in the repo is what
-              is on this site.
+              Raw block match is base-rate gameable (all-stone scores ~85%).
+              Scores are macro-averaged per block class, reported per layer,
+              and shown as skill above published trivial baselines.
             </p>
           </div>
         </div>
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <h2 className="text-xl font-bold text-[var(--color-fg-bright)]">
+          Artifacts
+        </h2>
+        <p className="text-sm text-[var(--color-fg-muted)] max-w-3xl leading-relaxed">
+          Every run will publish its full agent transcript, the submission
+          source, machine-readable per-layer scores, and audit annotations
+          (clean / leak / hack). The oracle is the real Java game running
+          privately; only derived data (block grids, state traces) is
+          published - no Minecraft source ever enters the agent context or the
+          traces.
+        </p>
       </section>
     </div>
   )
