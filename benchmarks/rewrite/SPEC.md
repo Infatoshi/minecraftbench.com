@@ -36,12 +36,18 @@ Part A - the task prompt is deliberately short, vibe-coder style, version-pinned
     for this machine (RTX 3090, sm_86). Expose the interface in INTERFACE.md. You will be
     scored per SCORING.md. An oracle CLI is available for development (see ORACLE.md). Go.
 
-Delivery note (verified 2026-07-08): the prompt lives in GOAL.md and is passed as
-`"$(cat GOAL.md)"` to each harness. `claude -p` does NOT expand slash commands (print mode has no
-command system per current docs), so a /goal-style custom command is not an option for claude;
-codex custom prompts (~/.codex/prompts) are TUI-only as well. Non-interactive full-permission
-invocations: `claude -p ... --dangerously-skip-permissions`,
-`codex exec -m gpt-5.5 --dangerously-bypass-approvals-and-sandbox ...`.
+Delivery note (live-tested 2026-07-08): the prompt lives in GOAL.md, passed as `"$(cat GOAL.md)"`
+uniformly. `claude -p "/goal"` DOES expand a project .claude/commands/goal.md (tested end to end,
+despite docs suggesting otherwise), so claude could use a slash command - but codex custom prompts
+(~/.codex/prompts) are TUI-only, so cat GOAL.md stays the one mechanism that works everywhere.
+Verified max-thinking invocations per harness:
+- `claude -p ... --model claude-fable-5 --effort max --dangerously-skip-permissions`
+  (--effort values: low/medium/high/xhigh/max)
+- `codex exec -m gpt-5.5 -c model_reasoning_effort=xhigh --dangerously-bypass-approvals-and-sandbox ...`
+  (xhigh live-tested)
+- `grok -p --yolo -m grok-4.3 --effort max ...` (grok-4.3 = xAI flagship per docs.x.ai)
+- `cursor agent --print --yolo --model "composer-2.5[fast=true]" ...` (bracket syntax controls
+  the fast tier; same weights, faster inference)
 
 Part B - INTERFACE.md / SCORING.md / ORACLE.md are precise and machine-checkable. Ambiguity in
 the contract produces disputes; hints about method (GenLayer, RNG order, meshing) contaminate the
