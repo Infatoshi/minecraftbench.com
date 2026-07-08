@@ -53,3 +53,14 @@
   eval-time dump (--network none). Smoke-tested e2e: codex ran as mcbench, built hello.c,
   collect.sh pulled bundle + tree + session transcripts; mcbench cannot read the private
   oracle repo.
+- FIRST REAL RUN scored (20260708_031541, gpt-5.5 codex xhigh, mcbench sandbox). The model
+  self-terminated at ~15 min of the 8h budget (codex exec is one-shot; budget is a ceiling,
+  not a driver). Deliverables: full ABI + CLI + CUDA batched stepping, built clean in the
+  air-gapped eval container, deterministic dumps, honest self-caveat that worldgen is an
+  approximation. Scores over 2 post-freeze time-seeds: raw 85.9% / macro 18.3% vs all-stone
+  floor raw 90.5% / macro 14.7%. The metric design paid off on run one: ALL-STONE BEATS
+  GPT-5.5 ON RAW MATCH while macro correctly ranks them; ores/trees/water/caves ~0%.
+  Self-reported 37.5M SPS left unverified (gating harness not yet built).
+- Open question logged: should the runner re-prompt on early self-termination ("budget
+  remains, continue") or is one-shot part of the measurement? Leaning: one-shot IS the
+  benchmark - agents that stop early score what they shipped.

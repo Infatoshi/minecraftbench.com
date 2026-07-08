@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "bench": "rewrite",
-  "date": "2026-07-07",
-  "note": "EXAMPLE PLACEHOLDER DATA - no runs yet. Schema will grow per-layer worldgen scores, sim divergence, gated SPS per SPEC.md 6.4.",
+  "date": "2026-07-08",
+  "note": "First real run scored (worldgen leg only; sim + gated SPS legs land next). Score = macro-averaged per-block-class accuracy, mean over 2 time-seeds drawn after the run froze. Runs: benchmarks/rewrite/results/runs/.",
   "layers": [
     { "id": "biomes", "title": "Biome map", "metric": "per-class macro acc %" },
     { "id": "terrain", "title": "Terrain shape", "metric": "per-class macro acc %" },
@@ -13,14 +13,28 @@
     { "id": "sps", "title": "Batched throughput", "metric": "fidelity-gated SPS" }
   ],
   "baselines": [
-    { "name": "all-stone", "raw_match_pct": 89.0, "macro_acc_pct": 15.34, "note": "measured vs vanilla seed 489, 441-chunk decorated core" },
-    { "name": "superflat", "raw_match_pct": 74.99, "macro_acc_pct": 9.55, "note": "measured vs vanilla seed 489, 441-chunk decorated core" },
+    { "name": "all-stone", "raw_match_pct": 90.51, "macro_acc_pct": 14.69, "note": "mean over the 2 eval seeds" },
+    { "name": "superflat", "raw_match_pct": 73.94, "macro_acc_pct": 9.22, "note": "mean over the 2 eval seeds" },
     { "name": "biomes-only", "note": "not yet implemented" }
   ],
   "models": [
-    { "name": "example-model-a", "score": 41.2, "solved": 4, "notes": "placeholder" },
-    { "name": "example-model-b", "score": 33.7, "solved": 3, "notes": "placeholder" },
-    { "name": "example-model-c", "score": 24.9, "solved": 2, "notes": "placeholder" },
-    { "name": "example-model-d", "score": 12.4, "solved": 1, "notes": "placeholder" }
+    {
+      "name": "gpt-5.5 (codex, xhigh)",
+      "score": 18.3,
+      "solved": 0,
+      "notes": "run 20260708_031541: self-terminated after 15 min of an 8h budget; raw 85.9% vs all-stone raw 90.5% - macro 18.3% vs floor 14.7%. Air/stone/bedrock roughly placed; ores, trees, water, caves near zero. Self-reported 37.5M SPS unverified (gating not yet run)."
+    },
+    {
+      "name": "baseline: all-stone",
+      "score": 14.7,
+      "solved": 0,
+      "notes": "trivial candidate, published floor"
+    },
+    {
+      "name": "baseline: superflat",
+      "score": 9.2,
+      "solved": 0,
+      "notes": "trivial candidate, published floor"
+    }
   ]
 }

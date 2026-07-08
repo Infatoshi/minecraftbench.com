@@ -21,7 +21,7 @@ export default function HomePage() {
         </p>
         <div className="flex flex-wrap gap-3 text-xs">
           <span className="status-pill status-pill-warn">
-            example data - first sweep coming soon
+            v0: worldgen leg scored - sim + gated throughput coming
           </span>
         </div>
       </section>
