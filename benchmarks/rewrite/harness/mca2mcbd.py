@@ -15,6 +15,8 @@ so sections copy straight in at y-offset Y*16.
 """
 
 import argparse
+import glob
+import os
 import sys
 
 import numpy as np
@@ -23,6 +25,33 @@ from nbt.region import RegionFile
 from mcbd import write_mcbd
 
 CHUNK_U16 = 16 * 16 * 256
+
+
+def discover_window(region_dir: str, margin: int = 2) -> tuple[int, int, int, int]:
+    """Largest fully-populated square of present chunks, shrunk by `margin` on each side.
+
+    Pregen is centered on SPAWN, not the origin (seed 489's core is cx -45..-21), so eval
+    windows must be discovered from the save. The margin drops border chunks whose
+    decoration pass may be incomplete (decoration needs generated neighbors).
+    """
+    present = set()
+    for p in glob.glob(os.path.join(region_dir, "r.*.mca")):
+        rx, rz = map(int, os.path.basename(p).split(".")[1:3])
+        for m in RegionFile(p).get_metadata():
+            present.add((rx * 32 + m.x, rz * 32 + m.z))
+    if not present:
+        raise FileNotFoundError(f"no chunks in {region_dir}")
+    best = None  # (side, cx0, cz0)
+    for cx0, cz0 in present:
+        w = 0
+        while all((cx0 + i, cz0 + j) in present for i in range(w + 1) for j in range(w + 1)):
+            w += 1
+        if best is None or w > best[0]:
+            best = (w, cx0, cz0)
+    side, cx0, cz0 = best
+    if side <= 2 * margin:
+        raise ValueError(f"largest full square {side}x{side} too small for margin {margin}")
+    return (cx0 + margin, cz0 + margin, cx0 + side - 1 - margin, cz0 + side - 1 - margin)
 
 
 def _nibbles(raw: bytes) -> np.ndarray:
@@ -57,13 +86,21 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--region", required=True)
     ap.add_argument("--seed", required=True, type=int)
-    ap.add_argument("--cx0", required=True, type=int)
-    ap.add_argument("--cz0", required=True, type=int)
-    ap.add_argument("--cx1", required=True, type=int)
-    ap.add_argument("--cz1", required=True, type=int)
+    ap.add_argument("--cx0", type=int)
+    ap.add_argument("--cz0", type=int)
+    ap.add_argument("--cx1", type=int)
+    ap.add_argument("--cz1", type=int)
+    ap.add_argument("--auto", action="store_true", help="discover window from the save")
+    ap.add_argument("--margin", type=int, default=2)
     ap.add_argument("--dim", type=int, default=0)
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
+
+    if args.auto:
+        args.cx0, args.cz0, args.cx1, args.cz1 = discover_window(args.region, args.margin)
+        print(f"auto window: cx {args.cx0}..{args.cx1}, cz {args.cz0}..{args.cz1}")
+    elif None in (args.cx0, args.cz0, args.cx1, args.cz1):
+        ap.error("pass --auto or all of --cx0/--cz0/--cx1/--cz1")
 
     chunks = []
     for cz in range(args.cz0, args.cz1 + 1):

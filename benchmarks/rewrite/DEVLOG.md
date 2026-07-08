@@ -21,3 +21,25 @@
 - First eval: GPT-5.5 via codex Max-plan credits.
 - Site deployed (Vercel + Porkbun NS), placeholder leaderboard; monorepo mirrors kernelbench.com
   (site reads benchmarks/*/results/leaderboard.json at build time).
+
+## 2026-07-08 - harness v1 measured on real data
+
+- Diff toolchain live: mcbd.py / blockclass.py / diff.py / baselines / pytest suite (8 tests,
+  exact == on ints). mca2mcbd.py verified earlier against the private repo's reader (100% id
+  agreement, meta channel validated over 1005 chunks).
+- Metric floor CALIBRATED on a real vanilla world (seed 489, 441-chunk decorated core):
+  all-stone raw 89.00% / macro 15.34%; superflat raw 74.99% / macro 9.55%. The base-rate
+  thesis is now a measurement, not an estimate - these are the published floors.
+- Gotcha: pregen centers on SPAWN, not the origin (seed 489's core is cx -45..-21, cz 24..48).
+  Eval windows cannot be fixed constants. mca2mcbd/oracle_gen now auto-discover the largest
+  fully-populated chunk square (margin 2 for decoration completeness).
+- Protocol consequence: the eval window is only known AFTER the oracle runs, so strict
+  candidate-dumps-first ordering is dropped. New ordering: draw time-seed -> oracle generates
+  (air-gapped) -> discover spawn window -> candidate dumps that window in the clean container.
+  Integrity is unchanged: the seed still postdates submission freeze and the candidate
+  container still has no network/JVM, so it can never see oracle output. Alternative
+  (candidate must reimplement vanilla spawn selection to find the window itself) rejected as
+  an unnecessary extra failure mode coupled to the metric.
+- Codex delegate for the diff toolchain stalled 28 min with zero files written; killed and
+  hand-wrote (~250 lines). Lesson: delegate scope was fine but always inspect output dir
+  early, not just process liveness.

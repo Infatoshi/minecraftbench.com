@@ -102,15 +102,19 @@ Three legs. All fidelity legs run on TIME-SEEDS: `seed = hash(wallclock at eval 
 after the submission is frozen. No golden exists before eval begins.
 
 ### 6.1 Worldgen fidelity (the massive cheap suite)
-Dual execution per seed: candidate dumps region blocks FIRST (clean container, empty fs, no
-network, no JVM); the real Java game (private oracle repo, structures-off, save-flush protocol)
-generates truth AFTERWARDS. Diff block-for-block over sampled regions, including regions far from
-spawn (kills "only near origin" partials).
+Dual execution per seed: the real Java game (private oracle repo, structures-off, save-flush
+protocol) generates truth on an air-gapped host and the spawn-centered window is auto-discovered
+from the save (pregen centers on SPAWN, which moves with the seed - windows are not constants;
+measured on seed 489: core at cx -45..-21, cz 24..48). The candidate then dumps that exact window
+in a clean container (empty fs, no network, no JVM - it can never see oracle output, and the seed
+postdates submission freeze, so oracle-first loses nothing).
 
 Metric: MACRO-AVERAGED per-block-class accuracy, never raw %-match. Raw match is base-rate
-gameable (all-stone-below-y64 scores ~85%). Per-class pair histograms (world_verify.py style),
-macro-average across classes so ores/trees/caves count as much as stone/air. Reported per LAYER,
-each strictly harder: biomes -> terrain shape -> surface blocks -> caves/carving -> decoration.
+gameable - MEASURED on a real 441-chunk vanilla core (seed 489): all-stone raw 89.00% / macro
+15.34%; superflat raw 74.99% / macro 9.55%. These baselines run alongside every sweep as the
+published floor. Per-class pair histograms (world_verify.py style), macro-average across classes
+so ores/trees/caves count as much as stone/air. Reported per LAYER, each strictly harder:
+biomes -> terrain shape -> surface blocks -> caves/carving -> decoration.
 
 Trivial baselines published with the bench: all-stone, superflat, biomes-only reference candidates.
 Leaderboard shows skill above baseline, and the baselines' scores are printed on the site.

@@ -7,13 +7,14 @@ quality; only what the verifier measures counts.
 
 Evaluation seeds are derived from the wallclock AFTER your run is frozen. For each eval seed:
 
-1. Your `./mcbench --dump-world` runs FIRST, in a clean container: no network, no JVM, empty
-   filesystem except your repo. It dumps sampled chunk windows (including windows far from the
-   origin).
-2. The real Minecraft 1.11.2 (Java, structures off) then generates the same windows.
+1. The real Minecraft 1.11.2 (Java, structures off) generates the world on an air-gapped
+   verifier host and the spawn-centered chunk window is recorded. Worldgen centers on the
+   spawn point, which moves with the seed - windows are not fixed constants.
+2. Your `./mcbench --dump-world` is then asked for that exact window, in a clean container:
+   no network, no JVM, empty filesystem except your repo. It never sees oracle output.
 3. Block-for-block diff in the canonical .mcbd format.
 
-No golden exists before eval starts. There is nothing to memorize, embed, or look up.
+No golden exists before your run is frozen. There is nothing to memorize, embed, or look up.
 
 ## Worldgen metric
 

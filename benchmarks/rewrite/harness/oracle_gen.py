@@ -6,7 +6,8 @@ wrapper only drives it. Set MCBENCH_ORACLE_ROOT (default ~/dev/minecraft/mc-1.11
 
 Usage:
   uv run --with numpy --with nbt --with pyyaml python oracle_gen.py --seed 123456789 --out oracle.mcbd
-  # optional: --cx0/--cz0/--cx1/--cz1 (default: the fully-decorated pregen core, -11..11)
+  # window is auto-discovered from the save (pregen centers on SPAWN, not the origin);
+  # override with --cx0/--cz0/--cx1/--cz1
 
 Protocol (every step is a hard-won gotcha from the private repo's DEVLOG):
   1. wipe saves/qrl_<seed> (qrl reset REUSES existing folders; stale level.dat lies)
@@ -70,10 +71,10 @@ def kill_game() -> None:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--seed", required=True, type=int)
-    ap.add_argument("--cx0", type=int, default=-11)
-    ap.add_argument("--cz0", type=int, default=-11)
-    ap.add_argument("--cx1", type=int, default=11)
-    ap.add_argument("--cz1", type=int, default=11)
+    ap.add_argument("--cx0", type=int)
+    ap.add_argument("--cz0", type=int)
+    ap.add_argument("--cx1", type=int)
+    ap.add_argument("--cz1", type=int)
     ap.add_argument("--out", required=True)
     ap.add_argument("--keep-save", action="store_true")
     args = ap.parse_args()
@@ -140,14 +141,18 @@ def main() -> int:
         print(f"no region dir after generation: {region_dir}", file=sys.stderr)
         return 5
 
-    # 7. convert
+    # 7. convert (auto window unless explicitly overridden)
     here = Path(__file__).parent
+    if None in (args.cx0, args.cz0, args.cx1, args.cz1):
+        window = ["--auto"]
+    else:
+        window = ["--cx0", str(args.cx0), "--cz0", str(args.cz0),
+                  "--cx1", str(args.cx1), "--cz1", str(args.cz1)]
     conv = subprocess.run(
         [
             "uv", "run", "--no-project", "--with", "numpy", "--with", "nbt", "python",
             str(here / "mca2mcbd.py"), "--region", str(region_dir), "--seed", str(args.seed),
-            "--cx0", str(args.cx0), "--cz0", str(args.cz0),
-            "--cx1", str(args.cx1), "--cz1", str(args.cz1), "--out", args.out,
+            *window, "--out", args.out,
         ],
         cwd=here,
     )
