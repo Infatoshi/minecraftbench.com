@@ -46,3 +46,10 @@
 - End-to-end oracle cycle verified on fresh seed 20260708: launch -> qrl reset -> save flush ->
   .mca -> .mcbd in 34s total (pregen 6s once the JVM is warm-booted). A 20-seed eval suite is
   ~15 min of oracle time. Floor is seed-stable: all-stone macro 15.20% (vs 15.34% on 489).
+- Run sandbox live (runner/SANDBOX.md): bare-metal `mcbench` unix user (GPU groups, 750 on
+  /home/infatoshi, systemd scope caps 24 threads / 64G, CUDA_VISIBLE_DEVICES=1) - chosen over
+  Docker for the run because the task targets real hardware (profilers, honest /proc) and
+  run-time isolation is not eval integrity; the time-seed protocol is. Docker only for the
+  eval-time dump (--network none). Smoke-tested e2e: codex ran as mcbench, built hello.c,
+  collect.sh pulled bundle + tree + session transcripts; mcbench cannot read the private
+  oracle repo.
