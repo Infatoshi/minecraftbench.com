@@ -168,3 +168,22 @@ submissions exist, even though it scores later. Harness keeps a quiet 24h ceilin
 safety, not told to the model as a target); leaderboard gains a prompt column and v1/v2
 runs never compare directly. v2 pilots: grok-4.5 and gpt-5.5 (plan-credit models spared;
 Max plan is scarce right now).
+
+## 2026-07-08: charts on the site
+Two additions above the run table, kernelbench-plain (no chart lib, no boxes): a sorted
+div-bar ranking (models accent green, baselines gray, unscoreable runs shown as "no score"
+rather than dropped) and a "where they die" heatmap - models x block classes, single-hue
+sequential ramp, values in-cell, dot for <1%. The heatmap is the sharpest artifact the bench
+produces: air/stone/bedrock solid for everyone, and the ores/wood/leaves/vegetation columns
+dark for the whole field until grok-4.5 cracked dirt/grass and sand/gravel. Chart data comes
+from results/runs/<id>/scores.json per-seed per-class means (app/_lib/data.ts
+loadPerClassMatrix), so it updates for free as runs land.
+
+## 2026-07-08: v2 pilots launched - grok-4.5 and gpt-5.5
+First two runs under prompt v2 (bar stated, no stated time limit, 24h harness ceiling):
+20260708_152310_grok_grok-4.5 and 20260708_152317_codex. Claude-harness models deliberately
+excluded (Max plan credits scarce; plan-billed runs only on explicit ask). The question these
+answer: is early self-termination prompt-fixable or is calibration deeper than wording?
+Grok's v1 lifetime was 9 min - it outlived that under v2 within the first minutes.
+Runner TODO carried forward: parse api_error_status/429 from the stream-json tail at collect
+time so INFRA endings are flagged mechanically, not by human memory (the fable-5 lesson).

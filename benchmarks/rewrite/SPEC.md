@@ -253,7 +253,13 @@ This public repo ships only: harness client code, canonical dump format spec, de
 
 - [ ] Observation buffer layout (voxel window size, entity slots) - decide with PufferLib compat in mind
 - [ ] Composite score weighting across the three legs
-- [ ] Per-run budget number
+- [x] Per-run budget number - resolved by v2 protocol (section 9): no stated limit, 24h harness ceiling
 - [ ] Tape corpus design (how many, what behaviors, who writes them)
 - [ ] Oracle CLI rate limit for dev-time access
 - [ ] Whether Rust submissions get the same ABI via cdylib (yes, probably; confirm)
+- [ ] diff.py v2 layer masks (biomes/terrain/surface/carving/decoration from existing dumps) -
+      designed in 6.5, unblocks the per-layer worldgen grid at zero eval cost
+- [ ] Workdir snapshots during runs for score-vs-time trajectories (harness-side, designed)
+- [ ] Trace publishing pipeline (redaction pass, then curated traces + trace_url column)
+- [ ] Runner infra-detection: parse api_error_status/429 from stream-json tail at collect time
+- [ ] Render-leg tolerances finalized from sabotage calibration when the leg lands (section 10)

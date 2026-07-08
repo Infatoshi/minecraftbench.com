@@ -1,3 +1,6 @@
-# raw run artifacts; published as curated traces deliberately, not by default
+# raw run artifacts; published as curated traces deliberately, not by default.
+# scores.json is derived data (per-class accuracy) and feeds the site's charts - committed.
 *
-!.gitignore
+!/.gitignore
+!*/
+!*/scores.json

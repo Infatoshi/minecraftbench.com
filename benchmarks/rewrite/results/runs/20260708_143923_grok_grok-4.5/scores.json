@@ -1,0 +1,368 @@
+{
+  "run_id": "20260708_143923_grok_grok-4.5",
+  "seeds": [
+    "6317687866726588217",
+    "1592263505780868066"
+  ],
+  "built": true,
+  "worldgen_macro_pct": 35.31,
+  "worldgen_raw_pct": 89.97,
+  "per_seed": {
+    "6317687866726588217": {
+      "raw_match_pct": 90.09853717691503,
+      "per_class": {
+        "air": {
+          "oracle_count": 21332093,
+          "match_count": 21070014,
+          "accuracy_pct": 98.77143325786176
+        },
+        "stone-family": {
+          "oracle_count": 5995158,
+          "match_count": 3982079,
+          "accuracy_pct": 66.4215855528745
+        },
+        "dirt/grass": {
+          "oracle_count": 398648,
+          "match_count": 281140,
+          "accuracy_pct": 70.52336898717665
+        },
+        "sand/gravel": {
+          "oracle_count": 134600,
+          "match_count": 14517,
+          "accuracy_pct": 10.785289747399704
+        },
+        "water": {
+          "oracle_count": 424956,
+          "match_count": 419379,
+          "accuracy_pct": 98.68762883686782
+        },
+        "lava": {
+          "oracle_count": 31307,
+          "match_count": 1931,
+          "accuracy_pct": 6.167949659820487
+        },
+        "ores": {
+          "oracle_count": 152187,
+          "match_count": 12438,
+          "accuracy_pct": 8.172839992903468
+        },
+        "wood": {
+          "oracle_count": 8976,
+          "match_count": 115,
+          "accuracy_pct": 1.2811942959001783
+        },
+        "leaves": {
+          "oracle_count": 67569,
+          "match_count": 5099,
+          "accuracy_pct": 7.546360017167636
+        },
+        "vegetation": {
+          "oracle_count": 10356,
+          "match_count": 456,
+          "accuracy_pct": 4.40324449594438
+        },
+        "clay/terracotta": {
+          "oracle_count": 543,
+          "match_count": 0,
+          "accuracy_pct": 0.0
+        },
+        "bedrock": {
+          "oracle_count": 339098,
+          "match_count": 248341,
+          "accuracy_pct": 73.23576075352848
+        },
+        "structure-ish": {
+          "oracle_count": 272,
+          "match_count": 0,
+          "accuracy_pct": 0.0
+        },
+        "other": {
+          "oracle_count": 5613,
+          "match_count": 4208,
+          "accuracy_pct": 74.9688223766257
+        }
+      },
+      "macro_accuracy_pct": 37.21181985529076,
+      "pair_histogram_top20": [
+        [
+          "air",
+          "air",
+          21070014
+        ],
+        [
+          "stone-family",
+          "stone-family",
+          5432227
+        ],
+        [
+          "water",
+          "water",
+          419380
+        ],
+        [
+          "dirt/grass",
+          "dirt/grass",
+          283767
+        ],
+        [
+          "bedrock",
+          "bedrock",
+          248341
+        ],
+        [
+          "air",
+          "stone-family",
+          171622
+        ],
+        [
+          "stone-family",
+          "dirt/grass",
+          140989
+        ],
+        [
+          "ores",
+          "stone-family",
+          126228
+        ],
+        [
+          "stone-family",
+          "air",
+          120072
+        ],
+        [
+          "stone-family",
+          "ores",
+          120039
+        ],
+        [
+          "dirt/grass",
+          "stone-family",
+          101208
+        ],
+        [
+          "bedrock",
+          "stone-family",
+          83666
+        ],
+        [
+          "stone-family",
+          "bedrock",
+          82250
+        ],
+        [
+          "stone-family",
+          "sand/gravel",
+          77678
+        ],
+        [
+          "sand/gravel",
+          "stone-family",
+          77493
+        ],
+        [
+          "air",
+          "leaves",
+          66838
+        ],
+        [
+          "leaves",
+          "air",
+          57287
+        ],
+        [
+          "sand/gravel",
+          "dirt/grass",
+          35218
+        ],
+        [
+          "lava",
+          "stone-family",
+          25808
+        ],
+        [
+          "sand/gravel",
+          "sand/gravel",
+          16041
+        ]
+      ]
+    },
+    "1592263505780868066": {
+      "raw_match_pct": 89.837404281374,
+      "per_class": {
+        "air": {
+          "oracle_count": 21473366,
+          "match_count": 21160019,
+          "accuracy_pct": 98.54076440554313
+        },
+        "stone-family": {
+          "oracle_count": 6151870,
+          "match_count": 4133464,
+          "accuracy_pct": 67.19036650644438
+        },
+        "dirt/grass": {
+          "oracle_count": 417178,
+          "match_count": 291976,
+          "accuracy_pct": 69.98835029651612
+        },
+        "sand/gravel": {
+          "oracle_count": 184265,
+          "match_count": 90316,
+          "accuracy_pct": 49.014191517651206
+        },
+        "water": {
+          "oracle_count": 12266,
+          "match_count": 5609,
+          "accuracy_pct": 45.728028697211805
+        },
+        "lava": {
+          "oracle_count": 49252,
+          "match_count": 1266,
+          "accuracy_pct": 2.5704539917160725
+        },
+        "ores": {
+          "oracle_count": 157634,
+          "match_count": 1862,
+          "accuracy_pct": 1.1812172500856415
+        },
+        "wood": {
+          "oracle_count": 1876,
+          "match_count": 13,
+          "accuracy_pct": 0.6929637526652452
+        },
+        "leaves": {
+          "oracle_count": 18868,
+          "match_count": 375,
+          "accuracy_pct": 1.9874920500317999
+        },
+        "vegetation": {
+          "oracle_count": 39593,
+          "match_count": 1657,
+          "accuracy_pct": 4.185083221781628
+        },
+        "clay/terracotta": {
+          "oracle_count": 293,
+          "match_count": 0,
+          "accuracy_pct": 0.0
+        },
+        "bedrock": {
+          "oracle_count": 338624,
+          "match_count": 247890,
+          "accuracy_pct": 73.20508883008883
+        },
+        "structure-ish": {
+          "oracle_count": 655,
+          "match_count": 0,
+          "accuracy_pct": 0.0
+        },
+        "other": {
+          "oracle_count": 55636,
+          "match_count": 29799,
+          "accuracy_pct": 53.56064418721691
+        }
+      },
+      "macro_accuracy_pct": 33.417474621925194,
+      "pair_histogram_top20": [
+        [
+          "air",
+          "air",
+          21160019
+        ],
+        [
+          "stone-family",
+          "stone-family",
+          5643979
+        ],
+        [
+          "dirt/grass",
+          "dirt/grass",
+          292584
+        ],
+        [
+          "air",
+          "stone-family",
+          270962
+        ],
+        [
+          "bedrock",
+          "bedrock",
+          247890
+        ],
+        [
+          "ores",
+          "stone-family",
+          142798
+        ],
+        [
+          "stone-family",
+          "ores",
+          135516
+        ],
+        [
+          "dirt/grass",
+          "stone-family",
+          107354
+        ],
+        [
+          "stone-family",
+          "dirt/grass",
+          97784
+        ],
+        [
+          "sand/gravel",
+          "sand/gravel",
+          90327
+        ],
+        [
+          "bedrock",
+          "stone-family",
+          84002
+        ],
+        [
+          "sand/gravel",
+          "stone-family",
+          80911
+        ],
+        [
+          "stone-family",
+          "bedrock",
+          80882
+        ],
+        [
+          "stone-family",
+          "sand/gravel",
+          76202
+        ],
+        [
+          "stone-family",
+          "air",
+          75862
+        ],
+        [
+          "lava",
+          "stone-family",
+          41729
+        ],
+        [
+          "vegetation",
+          "air",
+          36381
+        ],
+        [
+          "other",
+          "other",
+          29799
+        ],
+        [
+          "stone-family",
+          "other",
+          24117
+        ],
+        [
+          "other",
+          "stone-family",
+          23733
+        ]
+      ]
+    }
+  }
+}
