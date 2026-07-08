@@ -1,11 +1,18 @@
 import type { Metadata } from "next"
-import { JetBrains_Mono } from "next/font/google"
+import { JetBrains_Mono, Press_Start_2P } from "next/font/google"
 import "./globals.css"
 
 const mono = JetBrains_Mono({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-mono-loaded",
+})
+
+const pixel = Press_Start_2P({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-pixel",
 })
 
 export const metadata: Metadata = {
@@ -39,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={mono.variable} data-theme="dark">
+    <html lang="en" className={`${mono.variable} ${pixel.variable}`} data-theme="dark">
       <body className="min-h-screen">
         <main className="container mx-auto px-4 sm:px-6 max-w-7xl py-10">
           {children}

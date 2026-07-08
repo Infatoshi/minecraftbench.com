@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <!-- pixel grass block -->
+  <rect width="16" height="16" fill="#6b4a2f"/>
+  <!-- dirt speckles -->
+  <rect x="2" y="8" width="2" height="2" fill="#5a3d26"/>
+  <rect x="7" y="10" width="2" height="2" fill="#7d5738"/>
+  <rect x="12" y="7" width="2" height="2" fill="#5a3d26"/>
+  <rect x="4" y="13" width="2" height="2" fill="#7d5738"/>
+  <rect x="10" y="12" width="2" height="2" fill="#5a3d26"/>
+  <rect x="1" y="11" width="1" height="1" fill="#7d5738"/>
+  <rect x="14" y="10" width="1" height="1" fill="#7d5738"/>
+  <!-- grass top -->
+  <rect x="0" y="0" width="16" height="4" fill="#6cc349"/>
+  <rect x="0" y="0" width="16" height="2" fill="#8fe363"/>
+  <!-- grass overhang -->
+  <rect x="0" y="4" width="2" height="1" fill="#6cc349"/>
+  <rect x="3" y="4" width="1" height="2" fill="#6cc349"/>
+  <rect x="6" y="4" width="2" height="1" fill="#6cc349"/>
+  <rect x="9" y="4" width="1" height="2" fill="#6cc349"/>
+  <rect x="12" y="4" width="2" height="1" fill="#6cc349"/>
+  <rect x="15" y="4" width="1" height="2" fill="#6cc349"/>
+  <!-- grass shading -->
+  <rect x="2" y="2" width="2" height="1" fill="#59a83c"/>
+  <rect x="8" y="3" width="3" height="1" fill="#59a83c"/>
+  <rect x="13" y="1" width="2" height="1" fill="#59a83c"/>
+</svg>

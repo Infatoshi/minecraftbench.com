@@ -7,9 +7,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col gap-12">
       <section className="flex flex-col gap-4">
-        <h1 className="text-3xl sm:text-4xl font-bold text-[var(--color-fg-bright)]">
-          minecraftbench.com
-        </h1>
+        <h1 className="title-grass">minecraftbench.com</h1>
         <p className="text-[var(--color-fg-muted)] max-w-3xl leading-relaxed">
           One prompt: rewrite Minecraft 1.11.2 from scratch in C/CUDA as a
           batched, PufferLib-style RL environment for a pinned RTX 3090. An
@@ -28,7 +26,7 @@ export default function HomePage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold text-[var(--color-fg-bright)]">
+        <h2 className="text-[var(--color-fg-bright)]">
           Rewrite <span className="text-[var(--color-fg-dim)]">·</span>{" "}
           <span className="text-sm font-normal text-[var(--color-fg-muted)]">
             {board.layers.length} scored layers, each strictly harder
@@ -99,7 +97,7 @@ export default function HomePage() {
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-xl font-bold text-[var(--color-fg-bright)]">
+        <h2 className="text-[var(--color-fg-bright)]">
           Why it cannot be reward-hacked
         </h2>
         <div className="grid sm:grid-cols-3 gap-3">
@@ -140,7 +138,7 @@ export default function HomePage() {
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-xl font-bold text-[var(--color-fg-bright)]">
+        <h2 className="text-[var(--color-fg-bright)]">
           Artifacts
         </h2>
         <p className="text-sm text-[var(--color-fg-muted)] max-w-3xl leading-relaxed">

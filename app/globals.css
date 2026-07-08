@@ -1,28 +1,39 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #111111;
-  --color-bg-depth: #000000;
-  --color-surface: #1a1a1a;
-  --color-surface-muted: #222222;
-  --color-surface-hover: #242424;
-  --color-surface-active: #2b2b2b;
-  --color-fg: #eeeeee;
+  /* Minecraft palette: void-dark bg, stone/dirt panels, grass+XP greens */
+  --color-bg: #0e0f11;
+  --color-bg-depth: #08090a;
+  --color-surface: #1b1c1e;
+  --color-surface-muted: #232426;
+  --color-surface-hover: #26282a;
+  --color-surface-active: #2e3032;
+  --color-fg: #e8e6e1;
   --color-fg-bright: #ffffff;
-  --color-fg-dim: #666666;
-  --color-fg-muted: #999999;
-  --color-accent: #5fbf4a;
-  --color-accent-dim: #1d3a17;
-  --color-warn: #fbbf24;
-  --color-bad: #fb7185;
-  --color-grid: #242424;
-  --color-border: #333333;
-  --color-border-strong: #5fbf4a;
+  --color-fg-dim: #66655f;
+  --color-fg-muted: #9c9a93;
+  --color-accent: #6cc349;
+  --color-accent-bright: #8fe363;
+  --color-accent-dim: #1d3512;
+  --color-dirt: #6b4a2f;
+  --color-dirt-dim: #3d2b1c;
+  --color-warn: #f4c542;
+  --color-bad: #e05c5c;
+  --color-grid: #1a1b1d;
+  --color-border: #333436;
+  --color-border-strong: #6cc349;
+
+  /* MC GUI bevel: light top-left, hard dark bottom-right */
+  --bevel-out: inset 2px 2px 0 rgba(255, 255, 255, 0.07),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.55);
+  --bevel-in: inset 2px 2px 0 rgba(0, 0, 0, 0.55),
+    inset -2px -2px 0 rgba(255, 255, 255, 0.06);
 
   --font-sans: Arial, Helvetica, ui-sans-serif, system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "Roboto Mono", "JetBrains Mono", "IBM Plex Mono", ui-monospace,
     SFMono-Regular, "Menlo", "Monaco", "Consolas", monospace;
+  --font-pixel: var(--font-pixel, "Press Start 2P"), var(--font-mono);
 }
 
 * {
@@ -42,18 +53,54 @@ html {
   color-scheme: dark;
 }
 
+/* Subtle voxel grid, like looking at the void through chunk borders */
+body {
+  background-image: linear-gradient(to right, var(--color-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
 header,
 footer {
   background: var(--color-bg-depth);
 }
 
 main {
-  background: var(--color-bg);
+  background: transparent;
 }
 
 ::selection {
   background: var(--color-accent-dim);
   color: var(--color-fg-bright);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-pixel);
+  letter-spacing: 0.02em;
+  line-height: 1.45;
+}
+
+/* Press Start 2P renders huge; pull sizes down */
+h1 {
+  font-size: 1.55rem;
+}
+h2 {
+  font-size: 0.95rem;
+}
+@media (max-width: 640px) {
+  h1 {
+    font-size: 1.15rem;
+  }
+  h2 {
+    font-size: 0.85rem;
+  }
+}
+
+.title-grass {
+  color: var(--color-fg-bright);
+  text-shadow: 3px 3px 0 var(--color-accent-dim);
 }
 
 a {
@@ -64,7 +111,7 @@ a {
 }
 a:hover {
   color: var(--color-fg-bright);
-  text-decoration-color: var(--color-accent);
+  text-decoration-color: var(--color-accent-bright);
 }
 
 a.no-underline,
@@ -73,10 +120,20 @@ a.no-underline * {
   text-decoration: none;
 }
 
+/* Everything is a block: no rounded corners anywhere */
+.box,
+.stat-box,
+.benchmark-card,
+.status-pill,
+.speed-bar,
+.speed-fill {
+  border-radius: 0;
+}
+
 .box {
   border: 1px solid var(--color-border);
   background: var(--color-surface);
-  border-radius: 4px;
+  box-shadow: var(--bevel-out);
   padding: 1rem;
 }
 
@@ -84,17 +141,14 @@ a.no-underline * {
   overflow: hidden;
   border: 1px solid var(--color-border);
   background: var(--color-surface);
-  border-radius: 4px;
+  box-shadow: var(--bevel-out);
   transition:
-    transform 160ms ease,
     border-color 160ms ease,
-    box-shadow 160ms ease,
     background 160ms ease;
 }
 
 .benchmark-card:hover {
   border-color: var(--color-border-strong);
-  box-shadow: inset 3px 0 0 var(--color-accent);
 }
 
 .benchmark-main {
@@ -103,12 +157,18 @@ a.no-underline * {
   color: inherit;
 }
 
+/* Inventory-slot look */
 .stat-box {
   min-height: 4.15rem;
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  background: var(--color-surface);
+  border: 1px solid var(--color-bg-depth);
+  background: var(--color-surface-muted);
+  box-shadow: var(--bevel-in);
   padding: 0.8rem;
+}
+
+.stat-box:hover {
+  background: var(--color-surface-hover);
+  outline: 1px solid var(--color-border-strong);
 }
 
 .underlined-link {
@@ -120,7 +180,7 @@ a.no-underline * {
 }
 
 .underlined-link:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-bright);
 }
 
 .tabular {
@@ -139,9 +199,12 @@ table.term td {
   border-bottom: 1px solid var(--color-border);
 }
 table.term thead th {
-  font-weight: 600;
-  color: var(--color-fg-bright);
-  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-pixel);
+  font-size: 0.58rem;
+  font-weight: 400;
+  color: var(--color-fg-muted);
+  text-transform: lowercase;
+  border-bottom: 2px solid var(--color-dirt-dim);
   background: var(--color-bg-depth);
 }
 table.term tbody tr:hover {
@@ -153,7 +216,7 @@ table.term tbody tr:hover {
   font-weight: 600;
 }
 .cell-winner {
-  color: var(--color-accent);
+  color: var(--color-accent-bright);
   font-weight: 800;
 }
 .cell-fail {
@@ -165,48 +228,65 @@ table.term tbody tr:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
-  padding: 0.18rem 0.48rem;
-  font-size: 0.68rem;
-  font-weight: 800;
-  line-height: 1.1;
-  text-transform: uppercase;
+  padding: 0.3rem 0.55rem;
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  font-weight: 400;
+  line-height: 1.4;
+  text-transform: lowercase;
   white-space: nowrap;
+  box-shadow: var(--bevel-out);
 }
 
 .status-pill-good {
   background: color-mix(in srgb, var(--color-accent-dim) 62%, transparent);
   color: var(--color-accent);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 48%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 48%, transparent);
 }
 
 .status-pill-warn {
-  background: color-mix(in srgb, var(--color-warn) 16%, transparent);
+  background: color-mix(in srgb, var(--color-warn) 12%, transparent);
   color: var(--color-warn);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-warn) 62%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-warn) 55%, transparent);
 }
 
 .status-pill-bad {
-  background: color-mix(in srgb, var(--color-bad) 16%, transparent);
+  background: color-mix(in srgb, var(--color-bad) 14%, transparent);
   color: var(--color-bad);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-bad) 62%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-bad) 55%, transparent);
 }
 
+/* XP bar */
 .speed-bar {
-  height: 0.34rem;
-  border-radius: 3px;
-  background: var(--color-surface-muted);
+  height: 0.55rem;
+  background: var(--color-bg-depth);
+  border: 1px solid #000;
+  box-shadow: var(--bevel-in);
   overflow: hidden;
 }
 
 .speed-fill {
   height: 100%;
-  border-radius: 3px;
-  background: color-mix(in srgb, var(--color-accent) 55%, transparent);
+  background: linear-gradient(
+    to bottom,
+    var(--color-accent-bright) 0%,
+    var(--color-accent-bright) 45%,
+    var(--color-accent) 45%,
+    var(--color-accent) 100%
+  );
+  opacity: 0.75;
 }
 
 .speed-fill-winner {
-  background: var(--color-accent);
+  opacity: 1;
+}
+
+/* Section label with a grass edge, like the top of a grass block */
+.grass-edge {
+  border-top: 3px solid var(--color-accent);
+  box-shadow: 0 3px 0 var(--color-dirt);
+  width: 3.5rem;
+  margin-bottom: 0.75rem;
 }
 
 code,
