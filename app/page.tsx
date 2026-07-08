@@ -1,4 +1,5 @@
-import { loadRewriteLeaderboard } from "@/app/_lib/data"
+import { loadPerClassMatrix, loadRewriteLeaderboard } from "@/app/_lib/data"
+import { ClassHeatmap, MacroBars, type BarRow } from "./charts"
 import { TerminalHero } from "./terminal-hero"
 
 export default function HomePage() {
@@ -8,6 +9,25 @@ export default function HomePage() {
       .filter((r) => r.worldgen_macro_pct != null)
       .map((r) => r.worldgen_macro_pct as number),
   )
+  const matrix = loadPerClassMatrix(board)
+  const barRows: BarRow[] = [
+    ...board.runs.map(
+      (r): BarRow => ({
+        label: r.model,
+        value: r.worldgen_macro_pct,
+        kind: "model",
+        note: r.note,
+      }),
+    ),
+    ...board.baselines.map(
+      (b): BarRow => ({
+        label: `baseline: ${b.name}`,
+        value: b.worldgen_macro_pct,
+        kind: "baseline",
+        note: b.note,
+      }),
+    ),
+  ].sort((a, b) => (b.value ?? -1) - (a.value ?? -1))
 
   return (
     <div className="flex flex-col gap-10">
@@ -15,6 +35,16 @@ export default function HomePage() {
         <h1 className="title-grass">minecraftbench.com</h1>
         <TerminalHero />
       </section>
+
+      <section>
+        <MacroBars rows={barRows} />
+      </section>
+
+      {matrix.rows.length > 0 && (
+        <section>
+          <ClassHeatmap classes={matrix.classes} rows={matrix.rows} />
+        </section>
+      )}
 
       <section className="overflow-x-auto">
         <table className="term tabular text-xs">

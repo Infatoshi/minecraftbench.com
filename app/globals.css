@@ -397,3 +397,109 @@ pre,
   font-size: 0.5rem;
   color: var(--color-accent);
 }
+
+/* Charts: plain, blended, no boxes (same rules as the table) */
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.chart-title {
+  color: var(--color-fg-bright);
+}
+.chart-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--color-fg-muted);
+  text-transform: none;
+  margin-left: 0.5rem;
+}
+.chart-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.chart-row {
+  display: grid;
+  grid-template-columns: 14rem 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+}
+.chart-row-label {
+  font-family: var(--font-mono);
+  color: var(--color-fg-bright);
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chart-track {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.chart-bar-wrap {
+  flex: 1;
+  height: 14px;
+  background: var(--color-bg-depth);
+}
+.chart-bar {
+  height: 100%;
+  background: var(--color-accent);
+}
+.chart-bar-baseline {
+  background: var(--color-fg-dim);
+}
+.chart-val {
+  min-width: 3.6rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-fg-muted);
+}
+.chart-val-dnf {
+  color: var(--color-bad);
+}
+
+/* Heatmap */
+table.heatmap {
+  border-collapse: separate;
+  border-spacing: 2px;
+  font-size: 0.68rem;
+}
+table.heatmap th {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  color: var(--color-fg-muted);
+  vertical-align: bottom;
+  padding: 0 2px;
+}
+.heatmap-col-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+.heatmap-col-active {
+  color: var(--color-fg-bright);
+}
+.heatmap-model {
+  font-family: var(--font-mono);
+  color: var(--color-fg-bright);
+  text-align: right;
+  padding-right: 0.6rem;
+  white-space: nowrap;
+}
+.heatmap-cell {
+  width: 2.3rem;
+  height: 1.7rem;
+  text-align: center;
+  cursor: default;
+}
+.heatmap-val {
+  color: var(--color-fg);
+  font-variant-numeric: tabular-nums;
+}
+.heatmap-val-dark {
+  color: #08090a;
+  font-weight: 600;
+}
