@@ -5,6 +5,21 @@
   "note": "Per-run records. worldgen = macro-averaged per-block-class accuracy vs the real Java game over time-seeds drawn after the run froze (v0 scores the worldgen leg; sim tick-trace and fidelity-gated SPS land next). Raw artifacts: benchmarks/rewrite/results/runs/.",
   "runs": [
     {
+      "run_id": "20260708_143923_grok_grok-4.5",
+      "model": "grok-4.5 (high effort)",
+      "harness": "grok",
+      "date": "2026-07-08",
+      "built": true,
+      "worldgen_macro_pct": 35.31,
+      "worldgen_raw_pct": 89.97,
+      "hours_used": 0.15,
+      "hours_granted": 8,
+      "cost_usd": null,
+      "audit": "clean",
+      "note": "self-terminated at 9 min of 8h and still tops the board: first to place dirt/grass (70%) and sand/gravel (30%), first nonzero ores/leaves/wood; signed off with 'structurally correct, not bit-identical to Java yet'",
+      "trace_url": null
+    },
+    {
       "run_id": "20260708_122021_claude_claude-fable-5",
       "model": "claude-fable-5 (max effort)",
       "harness": "claude",
@@ -31,7 +46,7 @@
       "hours_granted": 8,
       "cost_usd": null,
       "audit": "clean",
-      "note": "leader; first to crack sea level - water 88%, lava 55%, air 99.5% - and first whose raw match ties all-stone while macro is +11 over it; ores/trees/caves still ~0%",
+      "note": "first to crack sea level - water 88%, lava 55%, air 99.5% - and raw match ties all-stone while macro is +11 over it; ores/trees/caves still ~0%",
       "trace_url": null
     },
     {

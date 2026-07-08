@@ -138,3 +138,19 @@
   judgment. Marked audit=flagged (infra) on the board; rerun scheduled post-reset. Lesson
   for the runner: a plan-credit 429 wall must be detected and recorded as infra, never
   conflated with self-termination (parse api_error_status from the stream-json tail).
+
+## 2026-07-08: grok-4.5 (released today) takes the lead in 9 minutes
+Ran grok-4.5 (high effort, its max tier) through a new `grok` harness the day it
+shipped. Self-terminated at 9 min of 8h - faster even than gpt-5.5's 15 min - with a
+clean EndTurn and the sign-off "structurally correct, not bit-identical to Java yet."
+Scored macro 35.31 / raw 89.97: new leader by ~10 points over opus-4.8. It is the
+first model past the decoration wall in any form: dirt/grass 70%, sand/gravel 30%,
+and the first nonzero ores (4.7), leaves (4.8), wood (1.0). Water 72%. Still zero on
+clay/terracotta and structures, lava regressed vs opus (4% vs 55%).
+Two findings sharpen: (1) the score-vs-grind-time correlation breaks at the top -
+the two shortest runs now hold ranks 1 and 3; ambition calibration and raw worldgen
+knowledge look like separate axes. (2) rank-encoded notes in leaderboard.json keep
+going stale ("current leader" twice now); notes are rank-free from here on.
+Harness detail: grok CLI has no --yolo and effort tops at high; headless is
+`-p --permission-mode bypassPermissions --output-format streaming-json`. Session
+auth (auth.json copy) worked in the sandbox.
