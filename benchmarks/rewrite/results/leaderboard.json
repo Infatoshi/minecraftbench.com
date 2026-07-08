@@ -22,6 +22,8 @@
       "name": "gpt-5.5 (codex, xhigh)",
       "score": 18.3,
       "solved": 0,
+      "hours_used": 0.24,
+      "hours_granted": 8,
       "notes": "run 20260708_031541: self-terminated after 15 min of an 8h budget; raw 85.9% vs all-stone raw 90.5% - macro 18.3% vs floor 14.7%. Air/stone/bedrock roughly placed; ores, trees, water, caves near zero. Self-reported 37.5M SPS unverified (gating not yet run)."
     },
     {

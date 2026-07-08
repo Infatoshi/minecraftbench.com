@@ -173,6 +173,13 @@ This public repo ships only: harness client code, canonical dump format spec, de
 
 - Pinned per-run budget (tokens or wallclock; exact number TBD), published. "Models can't do it"
   is only meaningful relative to a budget; cross-model comparison collapses without pinning.
+- ONE-SHOT IS CANONICAL (decided 2026-07-08): one prompt, one budget, no re-prompting or
+  continue-nudges - stopping early is a measured long-horizon failure mode, not a confound,
+  and nudge wording/cadence would be a free parameter models respond to differently. Budget
+  is a ceiling; the verifier scores whatever is on disk at exit or cutoff. BUDGET UTILIZATION
+  (wall-clock used / granted, from the run log) is a published leaderboard column so early
+  stopping is visible mechanically. A steered continue-loop variant may exist later only as a
+  clearly-labeled side experiment, never the benchmark.
 - First eval target: GPT-5.5 via codex (Max plan credits). Then the usual roster.
 - Harness: same runner pattern as kernelbench-hard sweeps (sandboxed agent, transcript capture,
   redaction pass, HF trace dataset per suite).

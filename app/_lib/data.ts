@@ -12,6 +12,8 @@ export type ModelRow = {
   score: number
   solved: number
   notes: string
+  hours_used?: number
+  hours_granted?: number
 }
 
 export type Leaderboard = {

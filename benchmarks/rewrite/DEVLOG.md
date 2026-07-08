@@ -78,3 +78,14 @@
   notes" helper, no fan-out of GenLayer/carving/decoration as parallel workstreams, i.e. it
   never tried to warp its effective time budget through parallelism despite the prompt hint
   and 24 threads. Ambition calibration includes parallelism ambition.
+- DECIDED: one-shot is canonical. No continue-loop, no re-prompting - stopping early is not
+  a confound, it is the phenomenon (the bet is about end-to-end autonomy, and deciding to
+  keep going is part of the task). A continue-loop would add a free parameter (nudge
+  wording/cadence) that models respond to differently, trading a mechanical protocol for
+  trust in nudge design - same reason anti-cheat prompt language is banned. Low scores are
+  an asset (headroom is what keeps a benchmark alive; the oracle exists, so 100% is
+  possible). Mitigation is reporting, not steering: BUDGET UTILIZATION becomes a published
+  leaderboard column (wall-clock used vs granted, straight from the run log, zero design
+  freedom) - "18.3% in 0.25h of 8h" tells the ambition-calibration story mechanically. A
+  steered continue-loop variant may exist later only as a clearly-labeled side experiment,
+  never the benchmark.

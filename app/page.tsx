@@ -55,6 +55,7 @@ export default function HomePage() {
                 <th>model</th>
                 <th>composite</th>
                 <th>layers cleared</th>
+                <th>budget used</th>
                 <th className="w-1/3">relative</th>
               </tr>
             </thead>
@@ -70,6 +71,11 @@ export default function HomePage() {
                   </td>
                   <td>
                     {m.solved}/{board.layers.length}
+                  </td>
+                  <td className="text-[var(--color-fg-muted)]">
+                    {m.hours_used != null && m.hours_granted != null
+                      ? `${m.hours_used}h / ${m.hours_granted}h`
+                      : "-"}
                   </td>
                   <td>
                     <div className="speed-bar">
