@@ -132,3 +132,9 @@
   time more than model tier below the top: glm (2.2h) > gpt-5.5 (0.24h) despite tier gap.
 - Cost reality: "cheap API" spread 4x-6x per run at similar quality (deepseek $17 / kimi
   $23 vs minimax $67 / zai $96). deepseek+kimi are the regression-test workhorses.
+- CORRECTION on fable-5: NOT self-terminated - killed by Max-plan usage-credit exhaustion
+  (429 "out of usage credits" wall at 61 min / 112 turns / 1.24M output tokens; resets
+  17:50 MDT). The broken tree was an artifact of mid-refactor termination, not agent
+  judgment. Marked audit=flagged (infra) on the board; rerun scheduled post-reset. Lesson
+  for the runner: a plan-credit 429 wall must be detected and recorded as infra, never
+  conflated with self-termination (parse api_error_status from the stream-json tail).

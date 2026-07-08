@@ -15,8 +15,8 @@
       "hours_used": 1.01,
       "hours_granted": 8,
       "cost_usd": null,
-      "audit": "clean",
-      "note": "the only run attempting vanilla-exact worldgen (Java Random, Improved/Octaves/Simplex noise, cave carving) and the only one using git - then declared done with a broken tree: its own features.h->feat.h rename left feat_trees.c uncompilable. Scored as on disk: no build, no score",
+      "audit": "flagged",
+      "note": "INFRA, not a fail: killed mid-refactor by Max-plan credit exhaustion (429 wall at 61 min, 112 turns, 1.24M output tokens), leaving the tree uncompilable. Also the only run attempting vanilla-exact worldgen (Java Random, noise, carving) and the only one using git. Rerun pending",
       "trace_url": null
     },
     {
