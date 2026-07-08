@@ -46,8 +46,9 @@ Scores, per tape:
   measures ~69/channel, so the strict window is ~240x. Renderer quality climbs the tiers;
   it never gates the state scores.
 
-Each graded run also produces a side-by-side video (oracle vs your env, divergence marked);
-videos are derived from the raw keyframe frames and never scored themselves.
+Each graded run also produces a side-by-side video (oracle vs your env, divergence marked)
+from the per-tick video/ frames, encoded at 20fps so playback is real time; videos are
+display-only and never scored themselves.
 
 ## Throughput metric (fidelity-gated, same-instance)
 

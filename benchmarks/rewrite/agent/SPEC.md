@@ -50,6 +50,10 @@ At every tick t where t % keyframe_every == 0, `--replay-tape` writes into DIR:
 - `world_<t>.mcbd`: canonical dump of the square window of chunks within window_radius of
   the chunk the player stands in.
 - `frame_<t>.png`: first-person frame at width x height via mcb_render.
+Additionally, at EVERY tick t, write `video/v_<t 0-padded to 5>.png` (same mcb_render call).
+These are encoded at 20fps into the side-by-side comparison video - real time, since the game
+runs 20 ticks per second. Video frames are display-only and never scored; only the keyframe
+artifacts above are graded.
 A sample tape ships in your repo root (`tape_sample.json`); grading tapes are fresh but use
 the same format, self-contained actions (dig/place/pour from inventory, short movements), and
 a post-freeze time-seed.
