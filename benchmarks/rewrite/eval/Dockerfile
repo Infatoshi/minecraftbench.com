@@ -5,7 +5,8 @@
 # ubuntu24.04 + cuda 12.8 = the dev sandbox host (glibc 2.39); candidates may carry
 # artifacts built there, so the eval base must match or honest builds fail to link
 FROM nvidia/cuda:12.8.1-devel-ubuntu24.04
-RUN apt-get update && apt-get install -y --no-install-recommends make cmake g++ && \
+RUN apt-get update && apt-get install -y --no-install-recommends make cmake g++ \
+    zlib1g-dev libpng-dev && \
     rm -rf /var/lib/apt/lists/*
 # dev-sandbox parity: the host exposes CUDA headers/libs on default search paths
 # (symlinks in /usr/local/include), so candidates legitimately build without -I flags

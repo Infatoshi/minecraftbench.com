@@ -113,7 +113,9 @@ case "$HARNESS" in
     sudo chown mcbench:mcbench /home/mcbench/.grok/auth.json
     sudo chmod 600 /home/mcbench/.grok/auth.json
     # shellcheck disable=SC2016
-    CMD="grok -p \"\$(cat prompt.txt)\" -m ${MODEL:-grok-4.5} --effort high --output-format streaming-json --permission-mode bypassPermissions"
+    # --disable-web-search: SPEC section 4 says no network; tool-level only - the real
+    # mechanical fix is the egress allowlist (SPEC 11), this just removes the easy path
+    CMD="grok -p \"\$(cat prompt.txt)\" -m ${MODEL:-grok-4.5} --effort high --output-format streaming-json --permission-mode bypassPermissions --disable-web-search"
     ;;
   kimi-claude)
     [[ -n "$MODEL" && -n "${KIMI_API_KEY:-}" ]] || { echo "--model + KIMI_API_KEY required" >&2; exit 2; }

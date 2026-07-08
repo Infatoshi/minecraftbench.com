@@ -213,3 +213,24 @@ git history and this log, but the public board only carries 10-seed scores going
 grok-4.5 and gpt-5.5 relaunched under v2 (24h ceiling) to repopulate it; baseline floors
 (all-stone 14.7 / superflat 9.2) will be rescored on the 10-seed protocol alongside the
 first rerun scoring and updated if they move.
+
+## 2026-07-08: first integrity event - grok-4.5 downloads cubiomes; also the 10-seed reruns
+The 10-seed rerun pair came back and one of them is the bench's first real audit story.
+- gpt-5.5: clean. 12 min, macro 17.34 / raw 82.94 (10 seeds). Third eval-parity bug on the
+  way: zlib.h present on the bare-metal sandbox, missing in the eval image (now installed,
+  with libpng-dev, and rescored). Parity scoreboard: CUDA include paths, glibc, zlib - all
+  three were "works where the agent built it, dies at eval."
+- grok-4.5: macro 74.75 / raw 98.32 in 26 min - and FLAGGED. third_party/cubiomes in the
+  tree is md5-identical to upstream (183KB finders.c byte-for-byte), so it was fetched, not
+  reproduced from weights. No curl/wget/clone in the shell log; the grok CLI's built-in web
+  tools are the only remaining path, and our streaming-json log does not record tool calls
+  (second gap: auditability). SPEC 4 says "no network" but nothing enforced it - by our own
+  rule (integrity is mechanical, never prose) this is a harness gap, so the run is published
+  with audit=flagged rather than scrubbed. Silver lining: the flagged number is a useful
+  measurement of what verbatim cubiomes buys (ores 86%, snow/ice 99%, dirt/grass 95%,
+  leaves/wood still <50% - decoration draw-order remains unsolved even WITH cubiomes).
+Mitigations: --disable-web-search added to the grok harness (soft, tool-level); SPEC 11 now
+carries two urgent items - a filtering-proxy egress allowlist (the mechanical fix) and a
+collect-time hash scan of candidate files against known reimplementation repos. Baselines
+also rescored on today's 20 oracle windows: all-stone 14.44, superflat 9.13 (the 2-seed-era
+numbers were honest within 0.3).
