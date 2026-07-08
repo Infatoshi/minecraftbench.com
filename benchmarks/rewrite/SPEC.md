@@ -19,11 +19,14 @@ that the target is reachable: craftax.c hit 47.8M SPS from-scratch C; the privat
 worldgen to 99.69-99.98% block-exact vs real MC (with source access and weeks of tooling - the
 agent gets neither).
 
-## 2. Pinned system
+## 2. Target system (declared per sweep, not fixed forever)
 
-- anvil GPU1: RTX 3090 24GB (sm_86). CPU: Ryzen 9950X3D. Always `nvidia-smi` before sweeps
-  (shared box; GPU0 is off-limits for eval runs).
-- The submission targets THIS machine. Portability is not scored.
+- Each sweep declares its target machine in results/ (hardware, driver, toolchain versions);
+  scores are only comparable within a sweep. The prompt tells the agent what machine it is
+  building for.
+- First sweep target: anvil GPU1, RTX 3090 24GB (sm_86), Ryzen 9950X3D. Always `nvidia-smi`
+  before sweeps (shared box; GPU0 is off-limits for eval runs).
+- Portability beyond the declared target is not scored.
 
 ## 3. The prompt (two-part design)
 

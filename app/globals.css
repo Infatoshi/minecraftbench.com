@@ -295,3 +295,79 @@ pre,
 .font-mono {
   font-family: var(--font-mono);
 }
+
+/* Terminal hero */
+.terminal {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-depth);
+  box-shadow: var(--bevel-out);
+  max-width: 56rem;
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.terminal-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  background: var(--color-fg-dim);
+}
+
+.terminal-dot:first-child {
+  background: var(--color-bad);
+}
+.terminal-dot:nth-child(2) {
+  background: var(--color-warn);
+}
+.terminal-dot:nth-child(3) {
+  background: var(--color-accent);
+}
+
+.terminal-title {
+  margin-left: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-fg-dim);
+}
+
+.terminal-body {
+  padding: 1rem 1rem 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  min-height: 6.2rem;
+  overflow-wrap: anywhere;
+}
+
+.terminal-ps1 {
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+}
+
+.terminal-cmd {
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  white-space: pre-wrap;
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--color-accent);
+  animation: blink 1.06s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
