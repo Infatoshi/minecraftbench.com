@@ -26,6 +26,7 @@ export default function HomePage() {
               <th>built</th>
               <th>worldgen</th>
               <th>budget</th>
+              <th>cost</th>
               <th>audit</th>
               <th>note</th>
               <th>trace</th>
@@ -60,6 +61,9 @@ export default function HomePage() {
                   {r.hours_used != null && r.hours_granted != null
                     ? `${r.hours_used}h / ${r.hours_granted}h`
                     : "-"}
+                </td>
+                <td className="text-[var(--color-fg-muted)]">
+                  {r.cost_usd != null ? `$${r.cost_usd.toFixed(0)}` : "-"}
                 </td>
                 <td
                   className={
@@ -96,6 +100,7 @@ export default function HomePage() {
                 <td title={`raw block match ${b.worldgen_raw_pct.toFixed(1)}%`}>
                   {b.worldgen_macro_pct.toFixed(1)}%
                 </td>
+                <td>-</td>
                 <td>-</td>
                 <td>-</td>
                 <td className="text-[var(--color-fg-muted)] max-w-md" title={b.note}>

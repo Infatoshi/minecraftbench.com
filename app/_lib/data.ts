@@ -11,6 +11,7 @@ export type RunRow = {
   worldgen_raw_pct: number | null
   hours_used: number | null
   hours_granted: number | null
+  cost_usd?: number | null
   audit: "clean" | "flagged" | "pending"
   note: string
   trace_url: string | null
