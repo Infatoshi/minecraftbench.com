@@ -32,7 +32,9 @@ else
   BUDGET_S=$(( BUDGET_HOURS * 3600 ))
 fi
 
-RUN_ID="$(date +%Y%m%d_%H%M%S)_${HARNESS}$( ((SMOKE)) && echo _smoke )"
+SUFFIX=""
+[[ $SMOKE -eq 1 ]] && SUFFIX="_smoke"
+RUN_ID="$(date +%Y%m%d_%H%M%S)_${HARNESS}${SUFFIX}"
 WORKDIR="/home/mcbench/runs/${RUN_ID}"
 LOG="/home/mcbench/runs/${RUN_ID}.log"
 
