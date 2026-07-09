@@ -371,3 +371,24 @@ platform package). grok CLI session auth tokens are short-lived (hours); a run l
 with an expired ~/.grok/auth.json silently falls into a device-code login loop and burns
 budget - check the log head. Also `--yolo` is a codex flag (and a shell alias on the dev
 box), not a grok flag; grok's equivalent is `--permission-mode bypassPermissions`.
+
+## 2026-07-08: first full-pack reruns under isolation - and what the old grok number was
+
+gpt-5.5 (codex, xhigh): 17.5 macro / 87.26 raw, self-terminated at 11 min. Statistically
+the same as its pre-reset 17.34 - the codex harness never had cross-run leakage to lose
+(codex exec starts stateless), so this is the expected repro.
+
+grok-4.5 (high): 32.69 macro / 92.72 raw, self-terminated at 20 min. Less than half of
+the 74.75 it scored pre-isolation. The 15:49 run that produced 74.75 carried grok
+cross-session memory of two full same-day attempts (14:39, 15:23 sessions were present
+in the shared ~/.grok) - the 74.75 was iteration-assisted, not single-shot. The board
+now carries the clean number. Both new runs implement --replay-tape, so the trajectory
+leg can score as soon as the graded tape + oracle recording land. Grok this time
+vendored five clean-room worldgen references (cubiomes, glowstone-gen, pocketmine
+vanillagen, Earthcomputer/fluffy-parakeet, py/ts ports) - provenance checked, all
+open-source reimplementations, within the vendoring ruling.
+
+Methodology note going forward: any score produced before per-run isolation
+(2026-07-08) from a harness with persistent local state is suspect; codex was stateless,
+claude-family harnesses kept ~/.claude between runs and would have the same exposure as
+grok if rerun without isolation.
