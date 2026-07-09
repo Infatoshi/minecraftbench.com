@@ -1,6 +1,16 @@
 import fs from "node:fs"
 import path from "node:path"
 
+export type TrajectoryScore = {
+  ticks: number
+  keyframes: number
+  last_match_tick: number
+  state_match_pct: number
+  block_match_pct: number
+  pixel_tape_mean: number | null
+  pixel_tier_pct: { strict: number; loose: number; structural: number }
+}
+
 export type RunRow = {
   run_id: string
   model: string
@@ -9,6 +19,7 @@ export type RunRow = {
   built: boolean
   worldgen_macro_pct: number | null
   worldgen_raw_pct: number | null
+  trajectory?: TrajectoryScore | { error: string } | null
   hours_used: number | null
   hours_granted: number | null
   cost_usd?: number | null

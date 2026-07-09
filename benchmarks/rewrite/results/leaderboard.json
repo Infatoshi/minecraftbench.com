@@ -1,8 +1,8 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "bench": "rewrite",
   "date": "2026-07-08",
-  "note": "Per-run records. worldgen = macro-averaged per-block-class accuracy vs the real Java game over 10 time-seeds drawn after the run froze (v0 scores the worldgen leg; sim tick-trace and fidelity-gated SPS land next). Board reset 2026-07-08: earlier rows were scored on 2 seeds, too noisy for cross-run deltas; runs are being redone under prompt v2 + 10-seed scoring. Prior numbers live in git history and DEVLOG.md. Raw artifacts: benchmarks/rewrite/results/runs/.",
+  "note": "Per-run records. worldgen = macro-averaged per-block-class accuracy vs the real Java game over 10 time-seeds drawn after the run froze. trajectory = tape replay vs an oracle recording of the real game (traj div = last exactly-matching keyframe / tape ticks; traj state = state field match; blocks + pixel tiers in the tooltip); rows predate the tape contract and show '-' until rerun. Board reset 2026-07-08: earlier rows were scored on 2 seeds, too noisy for cross-run deltas; runs are being redone under prompt v2 + 10-seed scoring. Prior numbers live in git history and DEVLOG.md. Raw artifacts: benchmarks/rewrite/results/runs/.",
   "runs": [
     {
       "run_id": "20260708_154932_grok_grok-4.5",
@@ -12,6 +12,7 @@
       "built": true,
       "worldgen_macro_pct": 74.75,
       "worldgen_raw_pct": 98.32,
+      "trajectory": null,
       "hours_used": 0.43,
       "hours_granted": 24,
       "cost_usd": null,
@@ -28,6 +29,7 @@
       "built": true,
       "worldgen_macro_pct": 17.34,
       "worldgen_raw_pct": 82.94,
+      "trajectory": null,
       "hours_used": 0.2,
       "hours_granted": 24,
       "cost_usd": null,

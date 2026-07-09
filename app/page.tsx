@@ -56,6 +56,8 @@ export default function HomePage() {
               <th>date</th>
               <th>built</th>
               <th>worldgen</th>
+              <th>traj div</th>
+              <th>traj state</th>
               <th>budget</th>
               <th>cost</th>
               <th>audit</th>
@@ -91,6 +93,31 @@ export default function HomePage() {
                     ? `${r.worldgen_macro_pct.toFixed(1)}%`
                     : "-"}
                 </td>
+                {r.trajectory && "error" in r.trajectory ? (
+                  <td className="cell-fail" colSpan={2} title={r.trajectory.error}>
+                    fail
+                  </td>
+                ) : r.trajectory ? (
+                  <>
+                    <td
+                      className="cell-score"
+                      title={`last exactly-matching keyframe / tape length (ticks)`}
+                    >
+                      {r.trajectory.last_match_tick}/{r.trajectory.ticks}
+                    </td>
+                    <td
+                      className="cell-score"
+                      title={`blocks ${r.trajectory.block_match_pct.toFixed(1)}% | pixel tiers strict ${r.trajectory.pixel_tier_pct.strict.toFixed(0)}% loose ${r.trajectory.pixel_tier_pct.loose.toFixed(0)}% structural ${r.trajectory.pixel_tier_pct.structural.toFixed(0)}%`}
+                    >
+                      {r.trajectory.state_match_pct.toFixed(1)}%
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td className="text-[var(--color-fg-dim)]">-</td>
+                    <td className="text-[var(--color-fg-dim)]">-</td>
+                  </>
+                )}
                 <td className="text-[var(--color-fg-muted)]">
                   {r.hours_used != null && r.hours_granted != null
                     ? `${r.hours_used}h / ${r.hours_granted}h`
@@ -135,6 +162,8 @@ export default function HomePage() {
                 <td title={`raw block match ${b.worldgen_raw_pct.toFixed(1)}%`}>
                   {b.worldgen_macro_pct.toFixed(1)}%
                 </td>
+                <td>-</td>
+                <td>-</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>

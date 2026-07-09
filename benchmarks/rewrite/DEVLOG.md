@@ -306,3 +306,32 @@ matches (non-strict); 1.11 selectors want type=!Player (CamelCase). Recording pr
 one recording per game launch. Contract updates in agent/SPEC.md: start pose, arena rules,
 respawn semantics, keyframe no-op tick, graded-field exclusions, mcbd canonicalization,
 per-tick video/ frames at 20fps (the 5fps keyframe slideshow was the wrong display artifact).
+
+## 2026-07-08: trajectory scorer + leaderboard schema v3
+
+The trajectory leg is now scoreable end to end on the public side:
+
+- `harness/traj_diff.py`: scores a candidate replay dir against an oracle recording dir.
+  Encodes the published canonicalization exactly - total_time/air excluded from state,
+  leaf check-decay bit (ids 18/161, meta 0x8) masked in .mcbd, candidate nulls tallied as
+  UNSIMULATED (honest, not a mismatch), pixel tiers strict/loose/structural = 16/32/48
+  mean abs diff per channel (calibrated on oracle cross-launch self-repro: tape mean 0.64,
+  worst keyframe 13.85). last_match_tick = last consecutive keyframe from tick 0 with
+  exact state AND exact blocks; pixels never gate it. Validated on the A9/B9 bit-exact
+  fixture pair: 580/580, state 100, blocks 100, all tiers 100.
+- `harness/tests/test_traj.py`: 10 unit tests on synthetic 1-chunk recordings (exclusions,
+  leaf mask, divergence gating, unsimulated semantics, tiers, missing artifacts, window
+  mismatch). Full harness suite 18 passing.
+- `eval/replay.sh`: candidate `./mcbench --replay-tape` in the same clean container as
+  dump.sh (--network none, GPU1, repo ro, 30 min timeout).
+- `runner/score_traj.sh RUN_ID TAPE ORACLE_DIR`: replay -> traj_diff -> merges a
+  "trajectory" object into the run's scores.json -> renders the side-by-side mp4 from the
+  per-tick video/ frames with a red border from the first divergent keyframe (display-only).
+  Replay path can't be exercised until a candidate implements --replay-tape; merge + video
+  paths tested by manual invocation with A9/B9.
+- leaderboard.json schema_version 3: runs carry "trajectory" (null until scored); site
+  shows traj div (last_match_tick/ticks) and traj state columns, blocks + pixel tiers in
+  the tooltip. Existing rows predate the tape contract and stay "-" until rerun.
+
+Oracle recordings + graded tapes are produced offline (derived data only) and handed to
+score_traj.sh; they are not part of this repo.
