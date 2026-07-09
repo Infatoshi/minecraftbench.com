@@ -392,3 +392,26 @@ Methodology note going forward: any score produced before per-run isolation
 (2026-07-08) from a harness with persistent local state is suspect; codex was stateless,
 claude-family harnesses kept ~/.claude between runs and would have the same exposure as
 grok if rerun without isolation.
+
+## 2026-07-09: opus 4.8 full-pack isolation run — 83.11 macro
+
+`20260709_001838_claude_claude-opus-4-8`: smoke passed under isolation after Max
+re-auth; prior same-day attempt (`20260708_220315_…`) was INFRA 429 (credit wall)
+and unscored. Fresh 24h run self-terminated clean at ~4.6h wall / ~$267 API cost
+(effort max). No session-limit terminal.
+
+Official 10 time-seed score (post-freeze seeds, clean `mcbench-eval` container):
+**built=true, worldgen_macro 83.11, worldgen_raw 99.41**. Per-seed macros
+[76.6, 80.1, 83.3, 86.7, 87.6, 82.7, 85.3, 85.5, 75.8, 87.6]. Far above the prior
+full-pack rows (grok 32.69, gpt-5.5 17.5) and the all-stone 14.44 floor.
+
+Eval infra note: first score attempt failed with `built=false` because the
+`mcbench-eval:latest` image was missing on this host (`docker: pull access denied`).
+Rebuilt from `benchmarks/rewrite/eval/Dockerfile` (CUDA 12.8 + ubuntu24.04) and
+re-dumped; candidate `make` + `--dump-world` succeeded in-container. Keep that
+image around or score will look like a failed build.
+
+Agent sign-off claims ~99.7% exact / ~88.7% macro on 19 self-chosen seeds with
+its own oracle dumps — directionally consistent with the official 83.11, but only
+the harness time-seed number is board-truth. Implements `--replay-tape` (traj still
+null until graded tape + oracle recording land).
