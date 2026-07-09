@@ -38,18 +38,32 @@ A repo that builds with `make` at the root, producing:
 
 ## Action tape format (.json) and keyframe artifacts
 
-Tape: `{"version": 1, "seed": <u64>, "dim": 0, "inventory": [{"slot": 0-8, "id": <blockId>,
-"count": N}, ...], "keyframe_every": 20, "window_radius": 2, "width": 640, "height": 360,
-"actions": [[forward, back, left, right, jump, sneak, sprint, attack, use, hotbar, dyaw,
-dpitch], ...]}` - one row per tick, same fields and units as McbAction. The player starts at
-the vanilla spawn point for the seed with the given hotbar inventory; tick 0 applies
-actions[0].
+Tape: `{"version": 1, "seed": <u64>, "start": {"x": <int>, "z": <int>, "yaw": <deg>,
+"pitch": <deg>}, "dim": 0, "inventory": [{"slot": 0-8, "id": <blockId>, "count": N}, ...],
+"keyframe_every": 20, "window_radius": 2, "width": 640, "height": 360, "actions": [[forward,
+back, left, right, jump, sneak, sprint, attack, use, hotbar, dyaw, dpitch], ...]}` - one
+action row per tick, same fields and units as McbAction. The player starts with feet at
+(start.x + 0.5, ysurf + 1, start.z + 0.5) facing (yaw, pitch), where ysurf is the highest
+non-air block in that column of the freshly generated world (the vanilla "spawn point" is
+not a pure function of the seed, so tapes carry the start explicitly). The world at tape
+start is fresh worldgen with no entities, no weather, fixed time 1000, and gamerules
+doDaylightCycle/doMobSpawning/doWeatherCycle/doMobLoot/doTileDrops off and randomTickSpeed
+0 - dug blocks drop nothing and nothing moves except what the tape does. The hotbar holds
+the listed inventory; tick 0 applies actions[0]. If the player dies mid-tape, they respawn
+at the exact start pose with fresh vitals on the next tick (respawn is pinned, not fuzzed),
+and the tape keeps playing.
 
 At every tick t where t % keyframe_every == 0, `--replay-tape` writes into DIR:
-- `state_<t>.json`: every McbObs field plus `"tick": t`, plain JSON numbers.
+- `state_<t>.json`: every McbObs field plus `"tick": t`, plain JSON numbers. Two fields are
+  excluded from exact grading: `time.total_time` and `air` (both are wall-clock-coupled on
+  the oracle side; everything else is compared exactly).
 - `world_<t>.mcbd`: canonical dump of the square window of chunks within window_radius of
   the chunk the player stands in.
 - `frame_<t>.png`: first-person frame at width x height via mcb_render.
+Keyframe capture protocol: after applying actions[t], ONE extra no-op tick (all-zero action)
+is stepped, and the artifacts reflect the post-no-op state. Your replay must insert the same
+no-op tick at each keyframe or nothing will line up (the oracle needs it to quiesce inputs
+for frame capture, so it is part of the contract).
 Additionally, at EVERY tick t, write `video/v_<t 0-padded to 5>.png` (same mcb_render call).
 These are encoded at 20fps into the side-by-side comparison video - real time, since the game
 runs 20 ticks per second. Video frames are display-only and never scored; only the keyframe
@@ -63,7 +77,9 @@ a post-freeze time-seed.
 Little-endian: magic "MCBDUMP1"; u64 seed; i32 cx0, cz0, cx1, cz1 (inclusive); u32 dim (0 =
 overworld); u32 reserved = 0; then u16 blocks: for cz in cz0..cz1, for cx in cx0..cx1, one
 chunk of 16*16*256 values indexed (y*16 + z)*16 + x. Value = (blockId << 4) | meta using
-vanilla 1.11.2 numeric ids. Air = 0.
+vanilla 1.11.2 numeric ids. Air = 0. Canonicalization: on leaves (ids 18 and 161) the
+check-decay meta bit (0x8) is masked to 0 before comparison - it is transient tick-scheduler
+state, not world content.
 
 ## Worldgen requirements (verified first, weighted heavily)
 

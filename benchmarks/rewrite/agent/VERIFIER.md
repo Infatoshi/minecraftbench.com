@@ -46,6 +46,11 @@ Scores, per tape:
   measures ~69/channel, so the strict window is ~240x. Renderer quality climbs the tiers;
   it never gates the state scores.
 
+The oracle recording is reproducible: two recordings of the same tape from two separate
+game launches match bit-for-bit on every keyframe state and world dump (after the published
+canonicalization), and most keyframe frames are pixel-identical - residual frame noise
+(camera interpolation phase on mid-motion frames) is what the strict tier absorbs.
+
 Each graded run also produces a side-by-side video (oracle vs your env, divergence marked)
 from the per-tick video/ frames, encoded at 20fps so playback is real time; videos are
 display-only and never scored themselves.

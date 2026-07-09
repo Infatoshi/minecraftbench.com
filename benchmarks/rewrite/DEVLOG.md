@@ -270,3 +270,39 @@ most shareable artifact. Agent contract (tape json format, --replay-tape CLI, ke
 artifacts) is in agent/SPEC.md; VERIFIER.md rewritten; also fixed a stale "fixed budget"
 line in the agent pack left over from v1. Next: build the tape recorder in the private
 oracle repo (oracle side only; nothing from that repo crosses here but derived artifacts).
+
+## 2026-07-08: oracle tape recording is reproducible across launches (bit-exact)
+
+Cross-launch repro test (same tape, two fresh JVMs, two fresh world creations of the same
+seed) started at scenery-level divergence and converged to bit-exact after fixing five
+nondeterminism sources, each verified by an A/B recording pair:
+1. Bridge reset re-used whatever world was loaded regardless of seed (RL fast-reset path);
+   both "seed 489" runs had recorded the autolaunch-config world. Added reset "fresh":true -
+   tears down the loaded world, deletes the qrl_<seed> save (stale saves re-join silently),
+   recreates from seed.
+2. Vanilla player spawn placement is NOT a pure function of the seed (createSpawnPosition
+   walks the unseeded world RNG; measured 3-4 block drift across creations). Tapes now carry
+   an explicit start column; feet at (x+0.5, highest_nonair+1, z+0.5). Also: vanilla's login
+   placement fires 1-2s AFTER the world is joinable and clobbers any earlier pin - the
+   recorder waits for position stability before prep.
+3. Worldgen passive mobs wander on unseeded AI RNG; drops scatter with RNG; random ticks
+   (grass/leaf) use the unseeded world RNG. Arena rules: kill @e[type=!Player], doMobLoot/
+   doTileDrops off, randomTickSpeed 0, gamerules set BEFORE any settle ticks run.
+4. Mid-tape death diverged: damage was deterministic but vanilla respawn re-rolls spawn
+   fuzz. /spawnpoint pins the respawn to the tape start pose - death is now replayable.
+   (Also: /tp does not reset fallDistance; prep flight needs damage immunity.)
+5. The integrated server free-runs at wall-clock 20Hz while the client is step-locked, so
+   server-computed state (air/drowning timing, total_time) drifts 1-2 ticks between runs.
+   total_time and air are excluded from exact grading; tape design rule: fluid mechanics get
+   graded via settled block states, not vitals timing.
+Also canonicalized .mcbd: leaves (18/161) check-decay meta bit masked (transient scheduler
+state; the only surviving dump diff, 13 blocks of 1.6M).
+Final pair: 30/30 keyframe states bit-identical, 30/30 world dumps bit-identical, 19/30
+frames pixel-identical, rest mean 0.64/channel (partialTicks camera interpolation on
+mid-motion frames - exactly what the strict pixel tier absorbs).
+Ops notes: prep commands must go through runcmds (server command manager) - chat-sent
+commands are silently dropped in the first ticks after reset; /kill "fails" when nothing
+matches (non-strict); 1.11 selectors want type=!Player (CamelCase). Recording protocol is
+one recording per game launch. Contract updates in agent/SPEC.md: start pose, arena rules,
+respawn semantics, keyframe no-op tick, graded-field exclusions, mcbd canonicalization,
+per-tick video/ frames at 20fps (the 5fps keyframe slideshow was the wrong display artifact).
