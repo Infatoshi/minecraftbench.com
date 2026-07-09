@@ -335,3 +335,39 @@ The trajectory leg is now scoreable end to end on the public side:
 
 Oracle recordings + graded tapes are produced offline (derived data only) and handed to
 score_traj.sh; they are not part of this repo.
+
+## 2026-07-08: per-run mount-namespace isolation (cross-run contamination found and fixed)
+
+Launching the first full-pack reruns exposed a real integrity hole: the fresh grok-4.5
+run's opening thoughts referenced "the most complete previous runs - especially kimi,
+claude-fable-5, and the grok ones with cubiomes. Also extract oracle dumps" - knowledge a
+clean sandbox cannot have. Source: /home/mcbench/.grok/ persisted across runs (full
+session transcripts of every prior grok run + session_search.sqlite, grok's cross-session
+memory), and the workdir sat inside /home/mcbench/runs/ next to every previous run's tree
+and log, all readable as the same unix user. /tmp was a third cross-run channel. Both
+in-flight runs were killed unscored (grok contaminated outright, codex exposed to the
+same hole).
+
+Fix is mechanical (hard rule: never prompt language), in run.sh:
+- launcher moved from `systemd-run --scope` to a transient service (`--pipe --wait`,
+  `-p User=mcbench`) because scopes cannot mount-namespace.
+- per-run private HOME `/home/mcbench/homes/<RUN_ID>` bound over /home/mcbench: all
+  harness state (.grok, .codex, .claude - sessions, memory, caches) is born and dies
+  with the run. Auth is seeded per run as before.
+- only the run's own workdir is bound into runs/<RUN_ID>; siblings, prior logs, and
+  oracle_dumps do not exist in the namespace. PrivateTmp=yes.
+- shared ~/.local (CLI binaries + node_modules) bound read-only - agents can no longer
+  tamper with binaries that later runs execute.
+- collect.sh now pulls session traces from the per-run HOME (grok/claude sessions too,
+  not just codex), with a fallback for pre-isolation runs.
+
+Verified: no-model probe inside the namespace sees only its own workdir (no siblings, no
+oracle_dumps, no prior .grok, empty /tmp, .local read-only, workdir writes reach the
+host, GPU visible); grok + codex --smoke both pass end-to-end under the new launcher.
+
+Ops notes: the codex npm launcher needs the whole node_modules tree, hence the .local
+bind instead of copying the bin script (first codex smoke failed on the missing
+platform package). grok CLI session auth tokens are short-lived (hours); a run launched
+with an expired ~/.grok/auth.json silently falls into a device-code login loop and burns
+budget - check the log head. Also `--yolo` is a codex flag (and a shell alias on the dev
+box), not a grok flag; grok's equivalent is `--permission-mode bypassPermissions`.
