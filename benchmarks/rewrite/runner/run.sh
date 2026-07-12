@@ -19,6 +19,7 @@ set -euo pipefail
 AGENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../agent" && pwd)"
 HARNESS=""
 MODEL=""
+EFFORT="max"
 BUDGET_HOURS=""
 SMOKE=0
 
@@ -26,6 +27,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --harness) HARNESS="$2"; shift 2 ;;
     --model) MODEL="$2"; shift 2 ;;
+    --effort) EFFORT="$2"; shift 2 ;;
     --budget-hours) BUDGET_HOURS="$2"; shift 2 ;;
     --smoke) SMOKE=1; shift ;;
     *) echo "unknown arg: $1" >&2; exit 2 ;;
@@ -110,11 +112,12 @@ case "$HARNESS" in
   claude)  # Anthropic models on the Max plan (claude-fable-5, claude-opus-4-8, ...)
     [[ -n "$MODEL" ]] || { echo "--model required for claude" >&2; exit 2; }
     stage_claude_home
+    EXTRA_ENV+=("CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0")
     sudo cp /home/infatoshi/.claude/.credentials.json "$PRIV_HOME/.claude/.credentials.json"
     sudo chown mcbench:mcbench "$PRIV_HOME/.claude/.credentials.json"
     sudo chmod 600 "$PRIV_HOME/.claude/.credentials.json"
     # shellcheck disable=SC2016
-    CMD="claude -p --verbose --output-format stream-json --model $MODEL --effort max --dangerously-skip-permissions \"\$(cat prompt.txt)\""
+    CMD="claude -p --verbose --output-format stream-json --model $MODEL --effort $EFFORT --dangerously-skip-permissions \"\$(cat prompt.txt)\""
     ;;
   grok)  # xAI models via the grok CLI (session auth from ~/.grok/auth.json)
     sudo cp /home/infatoshi/.local/bin/grok /home/mcbench/.local/bin/grok
